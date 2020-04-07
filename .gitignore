@@ -68,3 +68,10 @@
 ###< symfony/phpunit-bridge ###
 
 .env
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+/public/assets/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
