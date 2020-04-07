@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "fullcalendar": "^3.10.1",
+    "jquery": "^3.4.1"
+  },
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.28.3",
+    "node-sass": "^4.13.1",
+    "popper.js": "^1.16.1",
+    "sass-loader": "^7.0.1",
+    "webpack-notifier": "^1.6.0"
+  }
+}
