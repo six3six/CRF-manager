@@ -26,7 +26,7 @@
         "symfony/security-bundle": "*",
         "symfony/serializer-pack": "*",
         "symfony/string": "*",
-        "symfony/translation": "*",
+        "symfony/translation": "5.0.*",
         "symfony/twig-pack": "*",
         "symfony/validator": "*",
         "symfony/web-link": "*",

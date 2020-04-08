@@ -1,1 +1,11 @@
 @import "~bootstrap/scss/bootstrap";
+
+.login {
+  margin-top: 30px;
+}
+
+@include media-breakpoint-up(lg) {
+  .login {
+    width: 500px;
+  }
+}
