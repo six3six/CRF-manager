@@ -6,9 +6,13 @@ namespace App\Controller;
 use App\Entity\Availability;
 use App\Entity\Event;
 use App\Entity\User;
+use Doctrine\DBAL\Exception\ServerException;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,7 +29,10 @@ class PlanningController extends AbstractController
     }
 
     /**
-     * @Route("/planning/source/{source}", name="planningSources")
+     * @Route("/planning/source/{source}", name="planning_sources")
+     * @param $source
+     * @return JsonResponse
+     * @throws Exception
      */
     public function source($source)
     {
@@ -63,5 +70,28 @@ class PlanningController extends AbstractController
         }
 
         return new JsonResponse($calendar);
+    }
+
+    /**
+     * @Route("/planning/insert", name="planning_insert", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function insert(Request $request)
+    {
+        try {
+            $start = new \DateTime($request->server->get("start"));
+            $stop = new \DateTime($request->server->get("stop"));
+        } catch (Exception $e) {
+            return new JsonResponse(array("error" => "Bad time encoding"));
+        }
+
+        $av = new Availability();
+        $av->setStart($start);
+        $av->setStop($stop);
+        $av->setUser($this->getUser());
+
+        return new JsonResponse(array("response" => "ok"));
     }
 }
