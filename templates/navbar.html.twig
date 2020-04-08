@@ -1,17 +1,34 @@
 {% set knowTopic = topicActive is defined %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">CRF-Manager</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('planning') }}">Planning{% if knowTopic and topicActive == "planning" %}<span class="sr-only">(current)</span>{% endif %}</a>
             </li>
+            {% if app.user is not null and app.user.admin %}
             <li class="nav-item">
                 <a class="nav-link" href="#">Admin{% if knowTopic and topicActive == "admin" %}<span class="sr-only">(current)</span>{% endif %}</a>
             </li>
+            {% endif %}
         </ul>
     </div>
+
+    {% if app.user is not null %}
+    <span class="navbar-text font-weight-bold">
+        {{ app.user.name }} {{ app.user.surname|upper }}</span>
+    </span>
+
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_logout') }}">Se d&eacute;connecter</a>
+        </li>
+    </ul>
+    {% endif %}
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
 </nav>
