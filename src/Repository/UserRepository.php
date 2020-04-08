@@ -4,7 +4,10 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,6 +27,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     * @param UserInterface $user
+     * @param string $newEncodedPassword
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
     {
@@ -34,6 +41,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newEncodedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
+    }
+
+
+    /**
+     * @param $username string
+     * @return bool
+     */
+    public function isExistByUsername($username)
+    {
+        return $this->findBy(["username" => $username]) != null;
     }
 
     // /**

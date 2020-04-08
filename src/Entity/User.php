@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -81,6 +82,9 @@ class User implements UserInterface
         $this->created_event = new ArrayCollection();
         $this->events = new ArrayCollection();
         $this->availabilities = new ArrayCollection();
+        $d = new DateTime();
+        $d->setTimestamp(time());
+        $this->setBirthday($d);
     }
 
     public function getId(): ?int
