@@ -50,6 +50,10 @@ $(function () {
         },
         select: function (info) {
             window.location.href = "/planning/insert?start=" + info.startStr + "&stop=" + info.endStr;
+        },
+        eventClick: function (info) {
+            console.log(info.event.type);
+            if (info.event.type === "availability") window.location.href = info.event.url;
         }
     });
     calendar.render();

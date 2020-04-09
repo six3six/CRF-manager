@@ -20,11 +20,12 @@ $(function () {
     let start_time = new Date(getUrlParameter("start"));
     let stop_time = new Date(getUrlParameter("stop"));
     let now_time = new Date();
-    console.log(start_time);
-    start_time.setHours(now_time.getHours(), now_time.getMinutes());
-    stop_time.setHours(now_time.getHours(), now_time.getMinutes());
 
-    console.log(start_time);
+    if(!getUrlParameter("start").includes("T")) {
+        start_time.setHours(now_time.getHours(), now_time.getMinutes());
+        stop_time.setHours(now_time.getHours(), now_time.getMinutes());
+        stop_time.setDate(stop_time.getDate()-1);
+    }
 
     start.datetimepicker(picker_options);
     stop.datetimepicker(picker_options);
