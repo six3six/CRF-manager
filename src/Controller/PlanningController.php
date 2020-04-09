@@ -4,11 +4,9 @@ namespace App\Controller;
 
 
 use App\Entity\Availability;
-use App\Entity\Event;
-use App\Entity\User;
-use Doctrine\DBAL\Exception\ServerException;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PlanningController extends AbstractController
 {
+    const PLANNING_FORMAT = "Y-m-d\TH:i:s";
     /**
      * @Route("/planning", name="planning")
      */
@@ -45,25 +44,25 @@ class PlanningController extends AbstractController
             foreach ($events as $event) {
                 $f_event = array(
                     "title" => $event->getName(),
-                    "start" => $event->getStart()->format(\DateTime::ISO8601),
-                    "end" => $event->getStop()->format(\DateTime::ISO8601),
+                    "start" => $event->getStart()->format(PlanningController::PLANNING_FORMAT),
+                    "end" => $event->getStop()->format(PlanningController::PLANNING_FORMAT),
                 );
                 array_push($calendar, $f_event);
             }
         } elseif ($source == "availabilities") {
             foreach ($availabilities as $availability) {
                 $f_event = array(
-                    "title" => $availability->getName(),
-                    "start" => $availability->getStart()->format(\DateTime::ISO8601),
-                    "end" => $availability->getStop()->format(\DateTime::ISO8601),
+                    "title" => "Disponibilité",
+                    "start" => $availability->getStart()->format(PlanningController::PLANNING_FORMAT),
+                    "end" => $availability->getStop()->format(PlanningController::PLANNING_FORMAT),
                 );
                 array_push($calendar, $f_event);
             }
         } elseif ($source == "tests") {
             array_push($calendar, array(
                 "title" => "Test",
-                "start" => (new \DateTime())->format(\DateTime::ISO8601),
-                "end" => (new \DateTime("2020-04-10"))->format(\DateTime::ISO8601)
+                "start" => (new \DateTime())->format(PlanningController::PLANNING_FORMAT),
+                "end" => (new \DateTime("2020-04-10"))->format(PlanningController::PLANNING_FORMAT)
             ));
         } else {
             throw new NotFoundHttpException("Source not found");
@@ -73,25 +72,70 @@ class PlanningController extends AbstractController
     }
 
     /**
-     * @Route("/planning/insert", name="planning_insert", methods={"POST"})
+     * @Route("/planning/insert", name="planning_insert_api", methods={"POST"})
      * @param Request $request
-     * @return JsonResponse
-     * @throws Exception
+     * @return Response
      */
-    public function insert(Request $request)
+    public function insertAPI(Request $request)
     {
+        $start_text = $request->request->get("start");
+        $stop_text = $request->request->get("stop");
+
+        if(!$start_text) return $this->insert($request, "Date de début manquante");
+        if(!$stop_text) return $this->insert($request, "Date de fin manquante");
         try {
-            $start = new \DateTime($request->server->get("start"));
-            $stop = new \DateTime($request->server->get("stop"));
-        } catch (Exception $e) {
-            return new JsonResponse(array("error" => "Bad time encoding"));
+            $start = $this->dateTimePick2php($start_text);
+            $stop = $this->dateTimePick2php($stop_text);
+        }catch (Exception $e){
+            return $this->insert($request, $e->getMessage());
         }
+
 
         $av = new Availability();
         $av->setStart($start);
         $av->setStop($stop);
         $av->setUser($this->getUser());
 
-        return new JsonResponse(array("response" => "ok"));
+        $this->getDoctrine()->getManager()->persist($av);
+        $this->getDoctrine()->getManager()->flush();
+
+        return new RedirectResponse('/planning');
+    }
+
+    private function dateTimePick2php($text) : \DateTime{
+        $zones = explode(" ", $text);
+
+        $date_z = $zones[0];
+        $date_d = explode("/", $date_z);
+        $year = $date_d[2];
+        $month = $date_d[1];
+        $day = $date_d[0];
+
+        $hour_z = $zones[1];
+        $hour_d = explode(":", $hour_z);
+        $hour = $hour_d[0];
+        $minute = $date_d[1];
+
+
+        $date = new \DateTime();
+
+        $date->setDate((int)$year, (int)$month, (int)$day);
+        $date->setTime((int)$hour, (int)$minute, 0);
+
+        return $date;
+    }
+
+    /**
+     * @Route("/planning/insert", name="planning_insert", methods={"GET"})
+     * @param Request $request
+     * @param string $error
+     * @return Response
+     */
+    public function insert(Request $request, string $error= "")
+    {
+        return $this->render('planning/insert.html.twig', [
+            'controller_name' => 'PlanningController',
+            'error' => $error
+        ]);
     }
 }

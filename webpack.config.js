@@ -25,6 +25,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('planning', './assets/js/planning.js')
+    .addEntry('planning-insert', './assets/js/planning-insert.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
@@ -56,6 +57,7 @@ Encore
 
     // enables Sass/SCSS support
     .enableSassLoader()
+    .enableLessLoader()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
