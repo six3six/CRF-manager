@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profil{% endblock %}
+
+{% block body %}
+    {% include "navbar.html.twig" %}
+    <div class="container login">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        <h1 class="h3 mb-3 font-weight-normal">Mon profil</h1>
+        <h4>{{ app.user.name }} {{ app.user.surname|upper }} ({{ app.user.username }})</h4>
+
+        <form method="post" action="/email">
+
+            <div class="form-group">
+                <label for="inputEmail">Email</label>
+                <input type="text" value="{{ app.user.email }}" name="email" id="inputEmail" class="form-control" required>
+            </div>
+
+            <button class="btn btn-primary" type="submit">
+                Changer ses informations
+            </button>
+        </form>
+        <br>
+
+        <form method="post" action="/password">
+            <div class="form-group">
+                <label for="inputPrevPassword">Ancien mot de passe</label>
+                <input type="text" name="ancPassword" id="inputPrevPassword" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="inputNewPassword">Nouveau mot de passe</label>
+                <input type="text" name="newPassword" id="inputNewPassword" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="inputNewConfPassword">Confirmer le nouveau mot de passe</label>
+                <input type="text" name="confNewPassword" id="inputNewConfPassword" class="form-control" required>
+            </div>
+
+            <button class="btn btn-primary" type="submit">
+                Changer son mot de passe
+            </button>
+        </form>
+    </div>
+{% endblock %}
