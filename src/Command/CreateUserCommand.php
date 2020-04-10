@@ -68,6 +68,10 @@ class CreateUserCommand extends Command
         $surname = $io->ask("Surname");
         $email = $io->ask("Email");
 
+        $isAdmin_text = $io->choice("Is a admin", ["Yes", "No"], "No");
+        $isAdmin = $isAdmin_text == "Yes" ? true : false;
+
+
 
         $userE = new User();
         $userE->setUsername($username);
@@ -75,6 +79,9 @@ class CreateUserCommand extends Command
         $userE->setName($name);
         $userE->setSurname($surname);
         $userE->setEmail($email);
+        if($isAdmin) {
+            $userE->setRoles(["ROLE_ADMIN"]);
+        }
 
         $this->em->persist($userE);
         $this->em->flush();

@@ -10,12 +10,16 @@
         {% endif %}
         <h1 class="h3 mb-3 font-weight-normal">Mon profil</h1>
         <h4>{{ app.user.name }} {{ app.user.surname|upper }} ({{ app.user.username }})</h4>
+        {% if app.user.isAdmin %}
+            <h5 class="admin_marker">Admininistrateur</h5>
+        {% endif %}
 
         <form method="post" action="/email">
 
             <div class="form-group">
                 <label for="inputEmail">Email</label>
-                <input type="text" value="{{ app.user.email }}" name="email" id="inputEmail" class="form-control" required>
+                <input type="text" value="{{ app.user.email }}" name="email" id="inputEmail" class="form-control"
+                       required>
             </div>
 
             <button class="btn btn-primary" type="submit">
