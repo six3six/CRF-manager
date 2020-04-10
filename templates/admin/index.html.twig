@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CRFM - Admin{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin') }}
+{% endblock %}
+{% block body %}
+    {% include "navbar.html.twig" %}
+    <div class="container">
+        <div id="visualization"></div>
+    </div>
+{% endblock %}
