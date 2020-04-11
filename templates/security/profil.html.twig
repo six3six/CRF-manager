@@ -9,7 +9,7 @@
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
         <h1 class="h3 mb-3 font-weight-normal">Mon profil</h1>
-        <h4>{{ app.user.name }} {{ app.user.surname|upper }} ({{ app.user.username }})</h4>
+        <h4>{{ app.user.formattedName }} ({{ app.user.username }})</h4>
         {% if app.user.isAdmin %}
             <h5 class="admin_marker">Admininistrateur</h5>
         {% endif %}

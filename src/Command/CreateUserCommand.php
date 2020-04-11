@@ -76,8 +76,8 @@ class CreateUserCommand extends Command
         $userE = new User();
         $userE->setUsername($username);
         $userE->setPassword($encodedPassword);
-        $userE->setName($name);
-        $userE->setSurname($surname);
+        $userE->setFirstName($name);
+        $userE->setLastname($surname);
         $userE->setEmail($email);
         if($isAdmin) {
             $userE->setRoles(["ROLE_ADMIN"]);

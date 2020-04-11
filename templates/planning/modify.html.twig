@@ -19,7 +19,7 @@
         <h1 class="h3 mb-3 font-weight-normal"><strong>Modifier</strong> une disponibilité</h1>
         <h4>Disponibilité n°<strong>{{ availability.id }}</strong></h4>
         {% if app.user.isAdmin %}
-            <h4>Utilisateur : <strong>{{ availability.user.name }} {{ availability.user.surname|upper }}</strong></h4>
+            <h4>Utilisateur : <strong>{{ availability.user.formattedName }}</strong></h4>
         {% endif %}
         <h4></h4>
         <div class="form-group">

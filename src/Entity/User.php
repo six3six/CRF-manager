@@ -44,12 +44,12 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=510)
      */
-    private $name;
+    private $first_name;
 
     /**
      * @ORM\Column(type="string", length=510)
      */
-    private $surname;
+    private $last_name;
 
     /**
      * @ORM\Column(type="date")
@@ -177,28 +177,33 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getName(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->name;
+        return $this->first_name;
     }
 
-    public function setName(string $name): self
+    public function setFirstName(string $first_name): self
     {
-        $this->name = $name;
+        $this->first_name = $first_name;
 
         return $this;
     }
 
-    public function getSurname(): ?string
+    public function getLastname(): ?string
     {
-        return $this->surname;
+        return $this->last_name;
     }
 
-    public function setSurname(string $surname): self
+    public function setLastname(string $last_name): self
     {
-        $this->surname = $surname;
+        $this->last_name = $last_name;
 
         return $this;
+    }
+
+    public function getFormattedName(): ?string
+    {
+        return $this->first_name . " " . strtoupper($this->last_name);
     }
 
     public function getBirthday(): ?\DateTimeInterface

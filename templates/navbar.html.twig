@@ -19,7 +19,7 @@
 
     {% if app.user is not null %}
         <a href="/profil">
-            <span class="navbar-text font-weight-bold">{{ app.user.name }} {{ app.user.surname|upper }}</span>
+            <span class="navbar-text font-weight-bold">{{ app.user.formattedName }}</span>
         </a>
 
         <ul class="navbar-nav">
