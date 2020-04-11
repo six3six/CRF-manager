@@ -21,7 +21,7 @@ $(function () {
     let groups = new DataSet();
     let items = new DataSet();
 
-    $.getJSON("/admin/user_list", function (users) {
+    $.getJSON("/admin/user_list_api", function (users) {
         users.forEach(function (user) {
             groups.add({
                 id: user.username,
@@ -48,27 +48,6 @@ $(function () {
             });
         })
     });
-    /*
-        for (let i = 0; i < count; i++) {
-            let start = now + 1000 * 60 * 60 * 24 * (i + Math.floor(Math.random() * 7))
-            let end = start + 1000 * 60 * 60 * 24 * (1 + Math.floor(Math.random() * 5))
-
-            groups.add({
-                id: i,
-                content: 'Task ' + i,
-                order: i
-            });
-
-            items.add({
-                id: i,
-                group: i,
-                start: start,
-                end: end,
-                type: 'range',
-                content: 'Item ' + i
-            });
-        }
-    */
     // create a Timeline
     let container = document.getElementById('visualization');
     let timeline = new Timeline(container, null, options);

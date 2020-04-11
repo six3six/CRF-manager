@@ -21,9 +21,9 @@ class   AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/user_list", name="admin_user_list")
+     * @Route("/admin/user_list_api", name="admin_user_list_api")
      */
-    public function user_list()
+    public function user_list_api()
     {
         $userRepo = $this->getDoctrine()->getRepository(User::class);
         $all_users = $userRepo->findAll();
@@ -35,6 +35,19 @@ class   AdminController extends AbstractController
             ));
         }
         return new JsonResponse($ret);
+    }
+
+    /**
+     * @Route("/admin/user_list", name="admin_user_list")
+     */
+    public function user_list()
+    {
+        $userRepo = $this->getDoctrine()->getRepository(User::class);
+        $all_users = $userRepo->findAll();
+        return $this->render('admin/user_list.html.twig', [
+            'controller_name' => 'AdminController',
+            "users" => $all_users,
+        ]);
     }
 
     /**
@@ -69,4 +82,6 @@ class   AdminController extends AbstractController
 
         return new JsonResponse($ret);
     }
+
+
 }
