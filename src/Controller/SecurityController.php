@@ -42,13 +42,17 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/email", name="app_chgemail", methods={"POST"})
+     * @Route("/chginfos", name="app_chginfo", methods={"POST"})
      * @param Request $r
      * @return RedirectResponse
      */
     public function email(Request $r)
     {
+
         $this->getUser()->setEmail($r->request->get("email"));
+        $this->getUser()->setCellphone($r->request->get("cellphone"));
+        $this->getUser()->setPhone($r->request->get("phone"));
+        $this->getUser()->setAddress($r->request->get("address"));
         $this->getDoctrine()->getManager()->persist($this->getUser());
         $this->getDoctrine()->getManager()->flush();
         return new RedirectResponse("/profil");

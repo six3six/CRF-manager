@@ -76,6 +76,21 @@ class User implements UserInterface
      */
     private $availabilities;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $cellphone;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="string", length=1000)
+     */
+    private $address;
+
     public function __construct()
     {
         $this->skils = new ArrayCollection();
@@ -330,6 +345,42 @@ class User implements UserInterface
                 $availability->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCellphone(): ?string
+    {
+        return $this->cellphone;
+    }
+
+    public function setCellphone(string $cellphone): self
+    {
+        $this->cellphone = $cellphone;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }
