@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -149,6 +150,43 @@ class   AdminController extends AbstractController
     {
         return $this->render('admin/event.html.twig', [
         ]);
+    }
+
+    /**
+     * @Route("/admin/event/insert", name="admin_event_insert")
+     */
+    public function event_insert($error = "")
+    {
+        return $this->render('admin/event_insert.html.twig', [
+            "error" => $error
+        ]);
+    }
+
+    /**
+     * @Route("/admin/event/modify/{id}", name="admin_event_modify")
+     */
+    public function event_modify($id, $error = "")
+    {
+        $repo = $this->getDoctrine()->getRepository(Event::class);
+        $event = $repo->find($id);
+        if ($event == null) throw new NotFoundHttpException("Evenement non trouvé");
+        return $this->render('admin/event_modify.html.twig', [
+            "event" => $event,
+            "error" => $error
+        ]);
+    }
+
+    /**
+     * @Route("/admin/event/delete/{id}", name="admin_event_delete")
+     */
+    public function event_delete($id)
+    {
+        $repo = $this->getDoctrine()->getRepository(Event::class);
+        $event = $repo->find($id);
+        if ($event == null) throw new NotFoundHttpException("Evenement non trouvé");
+        $this->getDoctrine()->getManager()->remove($event);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute("admin_events_view");
     }
 
     /**

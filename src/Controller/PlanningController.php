@@ -129,7 +129,7 @@ class PlanningController extends AbstractController
         $this->getDoctrine()->getManager()->persist($availability);
         $this->getDoctrine()->getManager()->flush();
 
-        return new RedirectResponse("/planning");
+        return $this->redirectToRoute("planning");
     }
 
     /**
@@ -145,7 +145,7 @@ class PlanningController extends AbstractController
         if ($availability->getUser() !== $this->getUser() && !$this->getUser()->isAdmin()) throw new UnauthorizedHttpException("", "Vous n'avez pas le droit de modifier cette disponibilité");
         $this->getDoctrine()->getManager()->remove($availability);
         $this->getDoctrine()->getManager()->flush();
-        return new RedirectResponse("/planning");
+        return $this->redirectToRoute("planning");
     }
 
     /**

@@ -11,21 +11,26 @@
     {% include "navbar.html.twig" %}
 
     <div class="container">
-        <form method="post" href="{{ path('planning_insert_api') }}">
+        <form method="post" href="{{ path('admin_event_insert') }}">
             {% if error %}
                 <div class="alert alert-danger">{{ error }}</div>
             {% endif %}
-            <h1 class="h3 mb-3 font-weight-normal"><strong>Ajouter</strong> une <strong>nouvelle</strong> disponibilité</h1>
+            <h1 class="h3 mb-3 font-weight-normal"><strong>Ajouter</strong> un <strong>nouvel</strong> évenement</h1>
             <div class="form-group">
-                <label for="av_start">Début de la disponibilité</label>
+                <label for="av_name">Nom</label>
+                <input type="text" name="name" id="av_name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="av_start">Début de l'évenement</label>
                 <input type="text" name="start" id="av_start" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="av_stop">Fin de la disponibilité</label>
+                <label for="av_stop">Fin de l'évenement</label>
                 <input name="stop" id="av_stop" class="form-control" required>
             </div>
+            <div
 
-            <a class="btn btn-danger" href="{{ path('planning') }}">Annuler</a>
+            <a class="btn btn-danger" href="{{ path('admin_events_view') }}">Annuler</a>
             <button class="btn btn-primary" type="submit">
                 Valider
             </button>

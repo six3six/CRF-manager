@@ -49,10 +49,10 @@ $(function () {
             }
         ],
         dateClick: function (info) {
-            window.location.href = "/planning/insert?start=" + info.dateStr + "&stop=" + info.dateStr;
+            window.location.href = dataInsert + "?start=" + info.dateStr + "&stop=" + info.dateStr;
         },
         select: function (info) {
-            window.location.href = "/planning/insert?start=" + info.startStr + "&stop=" + info.endStr;
+            window.location.href = dataInsert + "?start=" + info.startStr + "&stop=" + info.endStr;
         },
         eventClick: function (info) {
             console.log(info.event.type);
