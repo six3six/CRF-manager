@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon profil{% endblock %}
+{% block title %}Profil - {{ user.formattedName }}{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-user') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin-user') }}
+{% endblock %}
 
 {% block body %}
     {% include "navbar.html.twig" %}
@@ -10,7 +16,7 @@
         {% endif %}
         <h1 class="h3 mb-3 font-weight-normal">Modification du profil</h1>
         <h4>{{ user.formattedName }} ({{ user.username }})</h4>
-
+        <input type="hidden" id="user_id" value="{{ user.id }}">
         <form method="post" action="">
             <div class="form-group">
                 <label for="inputFirst_name">Prénom</label>
@@ -54,6 +60,7 @@
             <button class="btn btn-primary" type="submit">
                 Changer les informations
             </button>
+            <div id="calendar"></div>
         </form>
     </div>
 {% endblock %}

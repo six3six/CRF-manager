@@ -28,6 +28,7 @@ Encore
     .addEntry('planning-insert', './assets/js/planning-insert.js')
     .addEntry('planning-modify', './assets/js/planning-modify.js')
     .addEntry('admin-event', './assets/js/admin-event.js')
+    .addEntry('admin-user', './assets/js/admin-user.js')
     .addEntry('admin', './assets/js/admin.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')

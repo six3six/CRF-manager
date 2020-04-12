@@ -128,7 +128,8 @@ class   AdminController extends AbstractController
                 "type" => "availability",
                 "start" => $av->getStart()->format(\DateTime::ISO8601),
                 "stop" => $av->getStop()->format(\DateTime::ISO8601),
-                "id" => $av->getId()
+                "id" => $av->getId(),
+                "backgroundColor" => "blue",
             ));
         }
         foreach ($user->getEvents() as $ev) {
@@ -136,7 +137,9 @@ class   AdminController extends AbstractController
                 "type" => "event",
                 "start" => $ev->getStart()->format(\DateTime::ISO8601),
                 "stop" => $ev->getStop()->format(\DateTime::ISO8601),
-                "id\" => $av->getId()"
+                "id" => $ev->getId(),
+                "title" => $ev->getName(),
+                "backgroundColor" => "red",
             ));
         }
 
