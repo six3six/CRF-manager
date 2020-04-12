@@ -28,7 +28,7 @@
                     <td>{{ user.firstName }}</td>
                     <td>{{ user.lastname|upper }}</td>
                     <td>{{ user.username }}</td>
-                    <td><a href="{{ path('admin') }}">Modifier</a></td>
+                    <td><a href="{{ path('admin_user_edit', {"username": user.username}) }}">Modifier</a></td>
                 </tr>
             {% endfor %}
             </tbody>

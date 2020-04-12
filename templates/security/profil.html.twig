@@ -43,7 +43,7 @@
         </form>
         <br>
 
-        <form method="post" action="/password">
+        <form method="post" action="{{ path('app_chgpassword') }}">
             <div class="form-group">
                 <label for="inputPrevPassword">Ancien mot de passe</label>
                 <input type="text" name="ancPassword" id="inputPrevPassword" class="form-control" required>
