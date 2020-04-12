@@ -2,15 +2,15 @@
 
 {% block title %}CRFM - Planning{% endblock %}
 {% block javascripts %}
-    {{ encore_entry_script_tags('planning') }}
+    {{ encore_entry_script_tags('admin-event') }}
 {% endblock %}
 {% block stylesheets %}
-    {{ encore_entry_link_tags('planning') }}
+    {{ encore_entry_link_tags('admin-event') }}
 {% endblock %}
 {% block body %}
     {% include "navbar.html.twig" %}
     <div class="container">
-        <h1>Mon planning</h1>
+        <h1>Evenements</h1>
         <div id="calendar"></div>
     </div>
 

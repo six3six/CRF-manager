@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CRFM - Planning{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('planning-insert') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('planning-insert') }}
+{% endblock %}
+{% block body %}
+    {% include "navbar.html.twig" %}
+
+    <div class="container">
+        <form method="post" href="{{ path('planning_insert_api') }}">
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            <h1 class="h3 mb-3 font-weight-normal"><strong>Ajouter</strong> une <strong>nouvelle</strong> disponibilité</h1>
+            <div class="form-group">
+                <label for="av_start">Début de la disponibilité</label>
+                <input type="text" name="start" id="av_start" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="av_stop">Fin de la disponibilité</label>
+                <input name="stop" id="av_stop" class="form-control" required>
+            </div>
+
+            <a class="btn btn-danger" href="{{ path('planning') }}">Annuler</a>
+            <button class="btn btn-primary" type="submit">
+                Valider
+            </button>
+        </form>
+    </div>
+
+{% endblock %}

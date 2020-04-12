@@ -50,8 +50,7 @@ class PlanningController extends AbstractController
                     "title" => $event->getName(),
                     "start" => $event->getStart()->format(PlanningController::PLANNING_FORMAT),
                     "end" => $event->getStop()->format(PlanningController::PLANNING_FORMAT),
-                    "id" => $event->getId(),
-                    "type" => "event"
+                    "url" => "/planning/event/" . $event->getId(),
                 );
                 array_push($calendar, $f_event);
             }

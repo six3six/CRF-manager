@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,17 +14,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class   AdminController extends AbstractController
 {
     /**
-     * @Route("/admin", name="admin")
+     * @Route("/admin/timeline", name="admin_timeline")
      */
     public function index()
     {
-        return $this->render('admin/index.html.twig', [
+        return $this->render('admin/timeline.html.twig', [
             'controller_name' => 'AdminController',
         ]);
     }
 
     /**
-     * @Route("/admin/user_list_api", name="admin_user_list_api")
+     * @Route("/admin/users/json", name="admin_user_list_api")
      */
     public function user_list_api()
     {
@@ -40,7 +41,7 @@ class   AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/user_list", name="admin_user_list")
+     * @Route("/admin/users", name="admin_user_list")
      */
     public function user_list()
     {
@@ -53,7 +54,7 @@ class   AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/user_edit/{username}", name="admin_user_edit", methods={"GET"})
+     * @Route("/admin/user/{username}/edit", name="admin_user_edit", methods={"GET"})
      * @param $username
      * @return Response
      */
@@ -70,7 +71,7 @@ class   AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/user_edit/{username}", name="admin_user_edit_save", methods={"POST"})
+     * @Route("/admin/user/{username}/edit", name="admin_user_edit_save", methods={"POST"})
      * @param Request $request
      * @param $username
      * @return Response
@@ -109,7 +110,7 @@ class   AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/user_planning/{username}", name="admin_user_planning")
+     * @Route("/admin/user/{username}/planning", name="admin_user_planning")
      * @param $username
      * @return JsonResponse
      */
@@ -141,5 +142,31 @@ class   AdminController extends AbstractController
         return new JsonResponse($ret);
     }
 
+    /**
+     * @Route("/admin/event", name="admin_events_view")
+     */
+    public function events_view()
+    {
+        return $this->render('admin/event.html.twig', [
+        ]);
+    }
 
+    /**
+     * @Route("/admin/event/list", name="admin_event_list")
+     */
+    public function event_list()
+    {
+        $eventRepo = $this->getDoctrine()->getRepository(Event::class);
+        $all_events = $eventRepo->findAll();
+        $ret = array();
+        foreach ($all_events as $event) {
+            array_push($ret, array(
+                "title" => $event->getName(),
+                "start" => $event->getStart()->format(PlanningController::PLANNING_FORMAT),
+                "end" => $event->getStop()->format(PlanningController::PLANNING_FORMAT),
+                "url" => "/admin/event_edit/" . $event->getId()
+            ));
+        }
+        return new JsonResponse($ret);
+    }
 }

@@ -21,13 +21,13 @@ $(function () {
     let groups = new DataSet();
     let items = new DataSet();
 
-    $.getJSON("/admin/user_list_api", function (users) {
+    $.getJSON("/admin/users/json", function (users) {
         users.forEach(function (user) {
             groups.add({
                 id: user.username,
                 content: user.name
             });
-            $.getJSON("/admin/user_planning/" + user.username, function (planning_els) {
+            $.getJSON("/admin/user/" + user.username + "/planning", function (planning_els) {
                 planning_els.forEach(function (planning_el) {
                     console.log(planning_el.type === "availability");
                     if (planning_el.type === "availability"){
