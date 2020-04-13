@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\User;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -57,6 +57,7 @@ class   AdminController extends AbstractController
     /**
      * @Route("/admin/user/{username}/edit", name="admin_user_edit", methods={"GET"})
      * @param $username
+     * @param string $error
      * @return Response
      */
     public function user_edit($username, $error = "")
@@ -126,8 +127,8 @@ class   AdminController extends AbstractController
         foreach ($user->getAvailabilities() as $av) {
             array_push($ret, array(
                 "type" => "availability",
-                "start" => $av->getStart()->format(\DateTime::ISO8601),
-                "stop" => $av->getStop()->format(\DateTime::ISO8601),
+                "start" => $av->getStart()->format(DateTime::ISO8601),
+                "stop" => $av->getStop()->format(DateTime::ISO8601),
                 "id" => $av->getId(),
                 "backgroundColor" => "blue",
             ));
@@ -135,8 +136,8 @@ class   AdminController extends AbstractController
         foreach ($user->getEvents() as $ev) {
             array_push($ret, array(
                 "type" => "event",
-                "start" => $ev->getStart()->format(\DateTime::ISO8601),
-                "stop" => $ev->getStop()->format(\DateTime::ISO8601),
+                "start" => $ev->getStart()->format(DateTime::ISO8601),
+                "stop" => $ev->getStop()->format(DateTime::ISO8601),
                 "id" => $ev->getId(),
                 "title" => $ev->getName(),
                 "backgroundColor" => "red",
@@ -157,6 +158,8 @@ class   AdminController extends AbstractController
 
     /**
      * @Route("/admin/event/insert", name="admin_event_insert")
+     * @param string $error
+     * @return Response
      */
     public function event_insert($error = "")
     {
@@ -167,6 +170,9 @@ class   AdminController extends AbstractController
 
     /**
      * @Route("/admin/event/modify/{id}", name="admin_event_modify")
+     * @param $id
+     * @param string $error
+     * @return Response
      */
     public function event_modify($id, $error = "")
     {
@@ -205,7 +211,7 @@ class   AdminController extends AbstractController
                 "title" => $event->getName(),
                 "start" => $event->getStart()->format(PlanningController::PLANNING_FORMAT),
                 "end" => $event->getStop()->format(PlanningController::PLANNING_FORMAT),
-                "url" => "/admin/event_edit/" . $event->getId()
+                "url" => $this->generateUrl("admin_event_modify", ["id" => $event->getId()])
             ));
         }
         return new JsonResponse($ret);
