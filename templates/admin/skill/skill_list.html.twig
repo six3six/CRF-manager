@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CRFM - Admin{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin') }}
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin') }}
+{% endblock %}
+{% block body %}
+    {% include "navbar.html.twig" %}
+    <div class="container">
+        <h1>Gestion des compétences</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Titre</th>
+                <th scope="col">Description</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for skill in skills %}
+                <tr id="tr-{{ skill.id }}">
+                    <td>{{ skill.id }}</td>
+                    <td>{{ skill.name }}</td>
+                    <td>{{ skill.description }}</td>
+                    <td><a href="{{ path('admin_skill_modify', {'id': skill.id}) }}"
+                           class="btn btn-success">Modifier</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('admin_skill_insert') }}" class="btn btn-success">Ajouter</a>
+    </div>
+{% endblock %}

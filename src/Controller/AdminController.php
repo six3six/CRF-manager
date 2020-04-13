@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\Skill;
 use App\Entity\User;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -48,7 +51,7 @@ class   AdminController extends AbstractController
     {
         $userRepo = $this->getDoctrine()->getRepository(User::class);
         $all_users = $userRepo->findAll();
-        return $this->render('admin/user_list.html.twig', [
+        return $this->render('admin/user/user_list.html.twig', [
             'controller_name' => 'AdminController',
             "users" => $all_users,
         ]);
@@ -65,7 +68,7 @@ class   AdminController extends AbstractController
         $userRepo = $this->getDoctrine()->getRepository(User::class);
         $user = $userRepo->findOneBy(["username" => $username]);
         if ($user == null) throw new NotFoundHttpException("Utilisateur non trouvé");
-        return $this->render('admin/user_edit.html.twig', [
+        return $this->render('admin/user/user_edit.html.twig', [
             'controller_name' => 'AdminController',
             "user" => $user,
             "error" => $error
@@ -152,7 +155,7 @@ class   AdminController extends AbstractController
      */
     public function events_view()
     {
-        return $this->render('admin/event.html.twig', [
+        return $this->render('admin/event/event.html.twig', [
         ]);
     }
 
@@ -163,7 +166,7 @@ class   AdminController extends AbstractController
      */
     public function event_insert($error = "")
     {
-        return $this->render('admin/event_insert.html.twig', [
+        return $this->render('admin/event/event_insert.html.twig', [
             "error" => $error
         ]);
     }
@@ -179,7 +182,7 @@ class   AdminController extends AbstractController
         $repo = $this->getDoctrine()->getRepository(Event::class);
         $event = $repo->find($id);
         if ($event == null) throw new NotFoundHttpException("Evenement non trouvé");
-        return $this->render('admin/event_modify.html.twig', [
+        return $this->render('admin/event/event_modify.html.twig', [
             "event" => $event,
             "error" => $error
         ]);
@@ -187,6 +190,8 @@ class   AdminController extends AbstractController
 
     /**
      * @Route("/admin/event/delete/{id}", name="admin_event_delete")
+     * @param $id
+     * @return RedirectResponse
      */
     public function event_delete($id)
     {
@@ -215,5 +220,120 @@ class   AdminController extends AbstractController
             ));
         }
         return new JsonResponse($ret);
+    }
+
+    /**
+     * @Route("/admin/skills", name="admin_skill_list")
+     */
+    public function skill_list()
+    {
+        $skillRepo = $this->getDoctrine()->getRepository(Skill::class);
+        $all_skill = $skillRepo->findAll();
+        return $this->render('admin/skill/skill_list.html.twig', [
+            'controller_name' => 'AdminController',
+            "skills" => $all_skill,
+        ]);
+    }
+
+    /**
+     * @Route("/admin/skill/insert", name="admin_skill_insert", methods={"GET"})
+     * @param string $error
+     * @return Response
+     */
+    public function skill_insert($error = "")
+    {
+        return $this->render('admin/skill/skill_insert.html.twig', [
+            "error" => $error
+        ]);
+    }
+
+    /**
+     * @Route("/admin/skill/insert", name="admin_skill_insert_post", methods={"POST"})
+     * @param Request $request
+     * @param string $errors
+     * @return Response
+     */
+    public function skill_insert_post(Request $request, $errors = "")
+    {
+        $keys = $request->request->keys();
+        if (!in_array("name", $keys) || !in_array("description", $keys)) throw new BadRequestHttpException("Une clé est manquante");
+        $name = $request->request->get("name");
+        if ($name == "") return $this->skill_insert("Le nom ne peut pas être vide");
+
+        $repo = $this->getDoctrine()->getRepository(Skill::class);
+        $as = $repo->findOneBy(["name" => $name]);
+        if ($as != null) return $this->skill_insert("Deux compétences ne peuvent pas avoir le même nom");
+
+        $skill = new Skill();
+        $skill->setName($name);
+        $skill->setDescription($request->request->get("description"));
+
+        $this->getDoctrine()->getManager()->persist($skill);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute("admin_skill_list");
+    }
+
+    /**
+     * @Route("/admin/skill/modify/{id}", name="admin_skill_modify", methods={"GET"})
+     * @param $id
+     * @param string $error
+     * @return Response
+     */
+    public function skill_modify($id, $error = "")
+    {
+        $repo = $this->getDoctrine()->getRepository(Skill::class);
+        $skill = $repo->find($id);
+        if ($skill == null) throw new NotFoundHttpException("Compétence non trouvée");
+        return $this->render('admin/skill/skill_modify.html.twig', [
+            "skill" => $skill,
+            "error" => $error
+        ]);
+    }
+
+    /**
+     * @Route("/admin/skill/modify/{id}", name="admin_skill_modify_post", methods={"POST"})
+     * @param Request $request
+     * @param string $errors
+     * @return Response
+     */
+    public function skill_modify_post(Request $request, $id, $errors = "")
+    {
+        $keys = $request->request->keys();
+        if (!in_array("name", $keys) || !in_array("description", $keys)) throw new BadRequestHttpException("Une clé est manquante");
+        $name = $request->request->get("name");
+        $description = $request->request->get("description");
+
+
+        $repo = $this->getDoctrine()->getRepository(Skill::class);
+        $skill = $repo->find($id);
+        if ($skill == null) throw new NotFoundHttpException("Compétence non trouvée");
+
+        if ($name == "") return $this->skill_modify($id, "Le nom ne peut pas être vide");
+
+        $as = $repo->findOneBy(["name" => $name]);
+        if ($as != null and $as != $skill) return $this->skill_modify($id, "Deux compétences ne peuvent pas avoir le même nom");
+
+
+        $skill->setName($name);
+        $skill->setDescription($description);
+
+        $this->getDoctrine()->getManager()->persist($skill);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute("admin_skill_list");
+    }
+
+    /**
+     * @Route("/admin/skill/delete/{id}", name="admin_skill_delete")
+     */
+    public function skill_delete($id)
+    {
+        $repo = $this->getDoctrine()->getRepository(Skill::class);
+        $skill = $repo->find($id);
+        if ($skill == null) throw new NotFoundHttpException("Evenement non trouvé");
+        $this->getDoctrine()->getManager()->remove($skill);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute("admin_skill_list");
     }
 }

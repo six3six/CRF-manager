@@ -29,11 +29,11 @@
                        required>
             </div>
 
-            <a class="btn btn-danger" href="{{ path('planning') }}">Annuler</a>
+            <a class="btn btn-danger" href="{{ path('admin_events_view') }}">Annuler</a>
             <button class="btn btn-primary" type="submit">
                 Valider
             </button>
-            <a class="btn btn-outline-danger btn-delete" href="{{ path('planning_delete', {'id': availability.id}) }}">Supprimer</a>
+            <a class="btn btn-outline-danger btn-delete" href="{{ path('admin_event_delete', {'id': event.id}) }}">Supprimer</a>
         </form>
     </div>
 

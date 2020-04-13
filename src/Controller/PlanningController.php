@@ -4,14 +4,13 @@ namespace App\Controller;
 
 
 use App\Entity\Availability;
-use App\Repository\AvailabilityRepository;
+use DateTime;
 use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -171,7 +170,7 @@ class PlanningController extends AbstractController
         return new RedirectResponse('/planning');
     }
 
-    private function dateTimePick2php($text): \DateTime
+    private function dateTimePick2php($text): DateTime
     {
         $zones = explode(" ", $text);
 
@@ -187,7 +186,7 @@ class PlanningController extends AbstractController
         $minute = $date_d[1];
 
 
-        $date = new \DateTime();
+        $date = new DateTime();
 
         $date->setDate((int)$year, (int)$month, (int)$day);
         $date->setTime((int)$hour, (int)$minute, 0);
@@ -208,4 +207,5 @@ class PlanningController extends AbstractController
             'error' => $error
         ]);
     }
+
 }
