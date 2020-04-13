@@ -32,46 +32,38 @@ class PlanningController extends AbstractController
     }
 
     /**
-     * @Route("/planning/source/{source}", name="planning_sources")
-     * @param $source
+     * @Route("/planning/source", name="planning_source")
      * @return JsonResponse
      * @throws Exception
      */
-    public function source($source)
+    public function source()
     {
         $calendar = array();
         $user = $this->getUser();
 
         $events = $user->getEvents();
         $availabilities = $user->getAvailabilities();
-        if ($source == "events") {
-            foreach ($events as $event) {
-                $f_event = array(
-                    "title" => $event->getName(),
-                    "start" => $event->getStart()->format(PlanningController::PLANNING_FORMAT),
-                    "end" => $event->getStop()->format(PlanningController::PLANNING_FORMAT),
-                    "url" => "/planning/event/" . $event->getId(),
-                );
-                array_push($calendar, $f_event);
-            }
-        } elseif ($source == "availabilities") {
-            foreach ($availabilities as $availability) {
-                $f_event = array(
-                    "title" => "Disponibilité",
-                    "start" => $availability->getStart()->format(PlanningController::PLANNING_FORMAT),
-                    "end" => $availability->getStop()->format(PlanningController::PLANNING_FORMAT),
-                    "url" => "/planning/modify/" . $availability->getId(),
-                );
-                array_push($calendar, $f_event);
-            }
-        } elseif ($source == "tests") {
-            array_push($calendar, array(
-                "title" => "Test",
-                "start" => (new \DateTime())->format(PlanningController::PLANNING_FORMAT),
-                "end" => (new \DateTime("2020-04-10"))->format(PlanningController::PLANNING_FORMAT)
-            ));
-        } else {
-            throw new NotFoundHttpException("Source not found");
+
+        foreach ($events as $event) {
+            $f_event = array(
+                "title" => $event->getName(),
+                "start" => $event->getStart()->format(PlanningController::PLANNING_FORMAT),
+                "end" => $event->getStop()->format(PlanningController::PLANNING_FORMAT),
+                "url" => "/planning/event/" . $event->getId(),
+                "backgroundColor" => "red",
+            );
+            array_push($calendar, $f_event);
+        }
+
+        foreach ($availabilities as $availability) {
+            $f_event = array(
+                "title" => "Disponibilité",
+                "start" => $availability->getStart()->format(PlanningController::PLANNING_FORMAT),
+                "end" => $availability->getStop()->format(PlanningController::PLANNING_FORMAT),
+                "url" => "/planning/modify/" . $availability->getId(),
+                "backgroundColor" => "blue",
+            );
+            array_push($calendar, $f_event);
         }
 
         return new JsonResponse($calendar);

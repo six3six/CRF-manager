@@ -17,7 +17,7 @@ import '@fullcalendar/list/main.css';
 
 import $ from 'jquery';
 
-let dataSource = "/planning/source/";
+let dataSource = "/planning/source";
 let dataInsert = "/planning/insert";
 $(function () {
     let add_event_modal = $("#addEventModal");
@@ -34,20 +34,7 @@ $(function () {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,listWeek'
         },
-        eventSources: [
-            {
-                url: dataSource + "availabilities",
-                color: 'blue',
-            },
-            {
-                url: dataSource + "events",
-                color: 'red',
-            },
-            {
-                url: dataSource + "tests",
-                color: 'yellow',
-            }
-        ],
+        events: dataSource,
         dateClick: function (info) {
             window.location.href = dataInsert + "?start=" + info.dateStr + "&stop=" + info.dateStr;
         },
