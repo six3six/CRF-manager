@@ -1,7 +1,4 @@
 import '../css/planning.scss';
-
-require("core-js");
-
 import {Calendar} from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -17,8 +14,10 @@ import '@fullcalendar/list/main.css';
 
 import $ from 'jquery';
 
+require("core-js");
+
 let dataSource = "/planning/source";
-let dataInsert = "/planning/insert";
+let dataInsert = "/planning/availability/";
 $(function () {
     let add_event_modal = $("#addEventModal");
 
@@ -36,10 +35,10 @@ $(function () {
         },
         events: dataSource,
         dateClick: function (info) {
-            window.location.href = dataInsert + "?start=" + info.dateStr + "&stop=" + info.dateStr;
+            window.location.href = dataInsert + "new/" + info.date.toISOString() + "/" + info.date.toISOString();
         },
         select: function (info) {
-            window.location.href = dataInsert + "?start=" + info.startStr + "&stop=" + info.endStr;
+            window.location.href = dataInsert + "new/" + info.start.toISOString() + "/" + info.end.toISOString();
         },
         eventClick: function (info) {
             console.log(info.event.type);

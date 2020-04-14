@@ -4,9 +4,11 @@ namespace App\Controller;
 
 
 use App\Entity\Availability;
+use App\Form\AvailabilityType;
 use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,9 +27,7 @@ class PlanningController extends AbstractController
      */
     public function index()
     {
-        return $this->render('planning/index.html.twig', [
-            'controller_name' => 'PlanningController',
-        ]);
+        return $this->render('planning/index.html.twig');
     }
 
     /**
@@ -59,7 +59,7 @@ class PlanningController extends AbstractController
                 "title" => "Disponibilité",
                 "start" => $availability->getStart()->format(PlanningController::PLANNING_FORMAT),
                 "end" => $availability->getStop()->format(PlanningController::PLANNING_FORMAT),
-                "url" => "/planning/modify/" . $availability->getId(),
+                "url" => "/planning/availability/" . $availability->getId(),
                 "backgroundColor" => "blue",
             );
             array_push($calendar, $f_event);
@@ -68,60 +68,6 @@ class PlanningController extends AbstractController
         return new JsonResponse($calendar);
     }
 
-    /**
-     * @Route("/planning/modify/{id}", methods={"GET"}, name="planning_modify")
-     * @param string $error
-     * @return Response
-     */
-    public function modify($id, $error = "")
-    {
-        $repo = $this->getDoctrine()->getRepository(Availability::class);
-        $availability = $repo->find($id);
-        if (!$availability) throw new NotFoundHttpException("La disponibilité n'existe pas");
-        if ($availability->getUser() !== $this->getUser() && !$this->getUser()->isAdmin()) throw new UnauthorizedHttpException("", "Vous n'avez pas le droit de modifier cette disponibilité");
-
-        return $this->render('planning/modify.html.twig', [
-            'controller_name' => 'PlanningController',
-            'error' => $error,
-            'availability' => $availability,
-            'time_format' => PlanningController::SHOW_FORMAT
-        ]);
-    }
-
-    /**
-     * @Route("/planning/modify/{id}", methods={"POST"}, name="planning_modify_api")
-     * @param Request $request
-     * @param $id
-     * @param string $error
-     * @return Response
-     */
-    public function modify_api(Request $request, $id, $error = "")
-    {
-        $repo = $this->getDoctrine()->getRepository(Availability::class);
-        $availability = $repo->find($id);
-        if (!$availability) throw new NotFoundHttpException("La disponibilité n'existe pas");
-        if ($availability->getUser() !== $this->getUser() && !$this->getUser()->isAdmin()) throw new UnauthorizedHttpException("", "Vous n'avez pas le droit de modifier cette disponibilité");
-
-        $start_text = $request->request->get("start");
-        $stop_text = $request->request->get("stop");
-
-        if (!$start_text) return $this->insert($request, "Date de début manquante");
-        if (!$stop_text) return $this->insert($request, "Date de fin manquante");
-        try {
-            $start = $this->dateTimePick2php($start_text);
-            $stop = $this->dateTimePick2php($stop_text);
-        } catch (Exception $e) {
-            return $this->insert($request, $e->getMessage());
-        }
-
-        $availability->setStart($start);
-        $availability->setStop($stop);
-
-        $this->getDoctrine()->getManager()->persist($availability);
-        $this->getDoctrine()->getManager()->flush();
-
-        return $this->redirectToRoute("planning");
-    }
 
     /**
      * @Route("/planning/delete/{id}", methods={"GET"}, name="planning_delete")
@@ -137,37 +83,6 @@ class PlanningController extends AbstractController
         $this->getDoctrine()->getManager()->remove($availability);
         $this->getDoctrine()->getManager()->flush();
         return $this->redirectToRoute("planning");
-    }
-
-    /**
-     * @Route("/planning/insert", name="planning_insert_api", methods={"POST"})
-     * @param Request $request
-     * @return Response
-     */
-    public function insertAPI(Request $request)
-    {
-        $start_text = $request->request->get("start");
-        $stop_text = $request->request->get("stop");
-
-        if (!$start_text) return $this->insert($request, "Date de début manquante");
-        if (!$stop_text) return $this->insert($request, "Date de fin manquante");
-        try {
-            $start = $this->dateTimePick2php($start_text);
-            $stop = $this->dateTimePick2php($stop_text);
-        } catch (Exception $e) {
-            return $this->insert($request, $e->getMessage());
-        }
-
-
-        $av = new Availability();
-        $av->setStart($start);
-        $av->setStop($stop);
-        $av->setUser($this->getUser());
-
-        $this->getDoctrine()->getManager()->persist($av);
-        $this->getDoctrine()->getManager()->flush();
-
-        return new RedirectResponse('/planning');
     }
 
     private function dateTimePick2php($text): DateTime
@@ -195,16 +110,83 @@ class PlanningController extends AbstractController
     }
 
     /**
-     * @Route("/planning/insert", name="planning_insert", methods={"GET"})
+     * @Route("/planning/availability/new/{start}/{stop}", name="planning_availability_new_start_stop")
      * @param Request $request
-     * @param string $error
+     * @param string $start
+     * @param string $stop
+     * @return Response
+     * @throws Exception
+     */
+    public function availability_start_stop(Request $request, $start, $stop)
+    {
+        $availability = new Availability();
+        $availability->setStart(new DateTime($start));
+        $availability->setStop(new DateTime($stop));
+        return $this->availability_new($request, $availability);
+    }
+
+    /**
+     * @Route("/planning/availability/new/", name="planning_availability_new")
+     * @param Request $request
+     * @param Availability $availability
      * @return Response
      */
-    public function insert(Request $request, string $error = "")
+    public function availability_new(Request $request, $availability = null)
     {
-        return $this->render('planning/insert.html.twig', [
-            'controller_name' => 'PlanningController',
-            'error' => $error
+        if ($availability == null) $availability = new Availability();
+
+        $form = $this->createForm(AvailabilityType::class, $availability);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $availability = $form->getData();
+            $availability->setUser($this->getUser());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($availability);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('planning');
+        }
+
+
+        return $this->render('planning/edit.html.twig', [
+            'form' => $form->createView(),
+            'delete' => false,
+        ]);
+    }
+
+    /**
+     * @Route("/planning/availability/{id}", name="planning_availability_edit")
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function availability_edit(Request $request, $id)
+    {
+        $repo = $this->getDoctrine()->getRepository(Availability::class);
+        $availability = $repo->find($id);
+        if ($availability == null) throw new NotFoundHttpException("Disponibilité non trouvé");
+        if ($availability->getUser() != $this->getUser() && !$this->getUser()->isAdmin()) throw new AccessDeniedException();
+        $form = $this->createForm(AvailabilityType::class, $availability);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $availability = $form->getData();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($availability);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('planning');
+        }
+
+        return $this->render('planning/edit.html.twig', [
+            'form' => $form->createView(),
+            'delete' => true,
+            "id" => $availability->getId(),
+            "user" => $availability->getUser()
         ]);
     }
 

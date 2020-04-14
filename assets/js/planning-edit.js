@@ -1,0 +1,26 @@
+import '../css/planning.scss';
+import $ from 'jquery';
+import "jquery-datetimepicker/build/jquery.datetimepicker.min.css";
+
+require("core-js");
+
+require("jquery-datetimepicker/build/jquery.datetimepicker.full.min");
+
+var picker_options = {
+    lang: 'fr',
+    format: 'd/m/Y H:i',
+};
+
+$(function () {
+    let datepickers = $(".datepicker");
+    console.log(datepickers);
+    for (let i = 0; i < datepickers.length; i++) {
+        let datep = $(datepickers[i]);
+        let date_val = new Date(datep.val());
+
+        console.log(datep);
+        datep.attr("type", 'text');
+        datep.datetimepicker(picker_options);
+    }
+
+});
