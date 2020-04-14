@@ -13,8 +13,7 @@ class SkillType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('description')
-            ->add('users');
+            ->add('description');
     }
 
     public function configureOptions(OptionsResolver $resolver)

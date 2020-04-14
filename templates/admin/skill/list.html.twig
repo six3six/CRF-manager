@@ -26,12 +26,12 @@
                     <td>{{ skill.id }}</td>
                     <td>{{ skill.name }}</td>
                     <td>{{ skill.description }}</td>
-                    <td><a href="{{ path('admin_skill_modify', {'id': skill.id}) }}"
+                    <td><a href="{{ path('admin_skill_edit', {'id': skill.id}) }}"
                            class="btn btn-success">Modifier</a></td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <a href="{{ path('admin_skill_insert') }}" class="btn btn-success">Ajouter</a>
+        <a href="{{ path('admin_skill_new') }}" class="btn btn-success">Ajouter</a>
     </div>
 {% endblock %}
