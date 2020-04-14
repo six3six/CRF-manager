@@ -30,7 +30,7 @@
 
     {% if app.user is not null %}
         <a href="{{ path('app_login') }}">
-            <span class="navbar-text font-weight-bold">{{ app.user.formattedName }}</span>
+            <span class="navbar-text font-weight-bold">{{ app.user.displayName }}</span>
         </a>
 
         <ul class="navbar-nav">

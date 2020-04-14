@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Skill;
 use App\Entity\User;
+use App\Form\EventType;
 use DateTime;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,9 +24,7 @@ class   AdminController extends AbstractController
      */
     public function index()
     {
-        return $this->render('admin/timeline.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
+        return $this->render('admin/timeline.html.twig');
     }
 
     /**
@@ -160,31 +160,69 @@ class   AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/event/insert", name="admin_event_insert")
-     * @param string $error
-     * @return Response
+     * @Route("/admin/event/list", name="admin_event_list")
      */
-    public function event_insert($error = "")
+    public function event_list()
     {
-        return $this->render('admin/event/event_insert.html.twig', [
-            "error" => $error
-        ]);
+        $eventRepo = $this->getDoctrine()->getRepository(Event::class);
+        $all_events = $eventRepo->findAll();
+        $ret = array();
+        foreach ($all_events as $event) {
+            array_push($ret, array(
+                "title" => $event->getName(),
+                "start" => $event->getStart()->format(PlanningController::PLANNING_FORMAT),
+                "end" => $event->getStop()->format(PlanningController::PLANNING_FORMAT),
+                "url" => $this->generateUrl("admin_event_edit", ["id" => $event->getId()])
+            ));
+        }
+        return new JsonResponse($ret);
     }
 
     /**
-     * @Route("/admin/event/modify/{id}", name="admin_event_modify")
-     * @param $id
-     * @param string $error
+     * @Route("/admin/event/new/{start}/{stop}", name="admin_event_new_start_stop")
+     * @param Request $request
+     * @param string $start
+     * @param string $stop
+     * @return Response
+     * @throws Exception
+     */
+    public function event_start_stop(Request $request, $start, $stop)
+    {
+        $event = new Event();
+        $event->setStart(new DateTime($start));
+        $event->setStop(new DateTime($stop));
+        return $this->event_new($request, $event);
+    }
+
+    /**
+     * @Route("/planning/event/new/", name="admin_event_new")
+     * @param Request $request
+     * @param Event $event
      * @return Response
      */
-    public function event_modify($id, $error = "")
+    public function event_new(Request $request, $event = null)
     {
-        $repo = $this->getDoctrine()->getRepository(Event::class);
-        $event = $repo->find($id);
-        if ($event == null) throw new NotFoundHttpException("Evenement non trouvé");
-        return $this->render('admin/event/event_modify.html.twig', [
-            "event" => $event,
-            "error" => $error
+        if ($event == null) $event = new Event();
+
+        $form = $this->createForm(EventType::class, $event);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $event = $form->getData();
+            $event->setCreatedBy($this->getUser());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($event);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('admin_events_view');
+        }
+
+
+        return $this->render('admin/event/edit.html.twig', [
+            'form' => $form->createView(),
+            'delete' => false,
         ]);
     }
 
@@ -204,23 +242,37 @@ class   AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/event/list", name="admin_event_list")
+     * @Route("/admin/event/{id}", name="admin_event_edit")
+     * @param Request $request
+     * @param $id
+     * @return Response
      */
-    public function event_list()
+    public function event_edit(Request $request, $id)
     {
-        $eventRepo = $this->getDoctrine()->getRepository(Event::class);
-        $all_events = $eventRepo->findAll();
-        $ret = array();
-        foreach ($all_events as $event) {
-            array_push($ret, array(
-                "title" => $event->getName(),
-                "start" => $event->getStart()->format(PlanningController::PLANNING_FORMAT),
-                "end" => $event->getStop()->format(PlanningController::PLANNING_FORMAT),
-                "url" => $this->generateUrl("admin_event_modify", ["id" => $event->getId()])
-            ));
+        $repo = $this->getDoctrine()->getRepository(Event::class);
+        $event = $repo->find($id);
+        if ($event == null) throw new NotFoundHttpException("Disponibilité non trouvé : " . $id);
+        $form = $this->createForm(EventType::class, $event);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $event = $form->getData();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($event);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('admin_events_view');
         }
-        return new JsonResponse($ret);
+
+        return $this->render('admin/event/edit.html.twig', [
+            'form' => $form->createView(),
+            'delete' => true,
+            "id" => $event->getId(),
+            "user" => $event->getCreatedBy()
+        ]);
     }
+
 
     /**
      * @Route("/admin/skills", name="admin_skill_list")
@@ -230,7 +282,6 @@ class   AdminController extends AbstractController
         $skillRepo = $this->getDoctrine()->getRepository(Skill::class);
         $all_skill = $skillRepo->findAll();
         return $this->render('admin/skill/skill_list.html.twig', [
-            'controller_name' => 'AdminController',
             "skills" => $all_skill,
         ]);
     }

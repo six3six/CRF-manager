@@ -12,16 +12,17 @@
 
     <div class="container">
         {% if id is defined %}
-            <h1><strong>Modifier</strong> la disponiblité numéro n°<strong>{{ id }}</strong></h1>
-            {% if app.user.admin and user is defined %}
-                <h4>Disponiblité de <strong>{{ user.displayName }}</strong></h4>
-            {% endif %}
+            <h1><strong>Modifier</strong> l'évenement numéro n°<strong>{{ id }}</strong></h1>
         {% else %}
-            <h1><strong>Ajouter</strong> une <strong>nouvelle</strong> disponibilité</h1>
+            <h1><strong>Ajouter</strong> un <strong>nouvel</strong> évenement</h1>
+        {% endif %}
+        {% if user is defined %}
+            <h4>Créé par <strong>{{ user.displayName }}</strong></h4>
         {% endif %}
         {{ form(form) }}
         {% if delete %}
-            <a class="btn btn-outline-danger btn-delete" href="{{ path('planning_delete', {'id': id}) }}">Supprimer</a>
+            <a class="btn btn-outline-danger btn-delete"
+               href="{{ path('admin_event_delete', {'id': id}) }}">Supprimer</a>
         {% endif %}
     </div>
 

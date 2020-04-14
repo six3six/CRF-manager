@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -44,12 +45,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=510)
      */
-    private $first_name;
-
-    /**
-     * @ORM\Column(type="string", length=510)
-     */
-    private $last_name;
+    private $display_name;
 
     /**
      * @ORM\Column(type="date")
@@ -192,41 +188,25 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getDisplayName(): ?string
     {
-        return $this->first_name;
+        return $this->display_name;
     }
 
-    public function setFirstName(string $first_name): self
+    public function setDisplayName(string $display_name): self
     {
-        $this->first_name = $first_name;
+        $this->display_name = $display_name;
 
         return $this;
     }
 
-    public function getLastname(): ?string
-    {
-        return $this->last_name;
-    }
 
-    public function setLastname(string $last_name): self
-    {
-        $this->last_name = $last_name;
-
-        return $this;
-    }
-
-    public function getFormattedName(): ?string
-    {
-        return $this->first_name . " " . strtoupper($this->last_name);
-    }
-
-    public function getBirthday(): ?\DateTimeInterface
+    public function getBirthday(): ?DateTimeInterface
     {
         return $this->birthday;
     }
 
-    public function setBirthday(\DateTimeInterface $birthday): self
+    public function setBirthday(DateTimeInterface $birthday): self
     {
         $this->birthday = $birthday;
 
