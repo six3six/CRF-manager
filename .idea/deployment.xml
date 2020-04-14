@@ -5,13 +5,11 @@
       <paths name="OVH">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
-            <mapping local="" />
+            <mapping deploy="/cr" local="$PROJECT_DIR$" web="/" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/var" />
             <excludedPath local="true" path="$PROJECT_DIR$/.env" />
-            <excludedPath local="true" path="$PROJECT_DIR$/src/Migrations" />
           </excludedPaths>
         </serverdata>
       </paths>

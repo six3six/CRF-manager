@@ -6,8 +6,10 @@ use App\Entity\Event;
 use App\Entity\Skill;
 use App\Entity\User;
 use App\Form\EventType;
+use App\Form\RegistrationFormType;
 use App\Form\SkillType;
 use App\Form\UserInfoType;
+use App\Security\LoginFormAuthenticator;
 use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class   AdminController extends AbstractController
 {
@@ -26,6 +30,43 @@ class   AdminController extends AbstractController
     public function index()
     {
         return $this->render('admin/timeline.html.twig');
+    }
+
+    /**
+     * @Route("/admin/user/register", name="admin_register")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param GuardAuthenticatorHandler $guardHandler
+     * @param LoginFormAuthenticator $authenticator
+     * @return Response
+     */
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
+    {
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // do anything else you need here, like send an email
+
+            return $this->redirectToRoute("admin_user_view");
+        }
+
+        return $this->render('admin/user/register.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

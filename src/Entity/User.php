@@ -31,7 +31,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private $roles = ["ROLE_USER"];
 
     /**
      * @var string The hashed password
@@ -77,17 +77,17 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $cellphone;
+    private $cellphone = "";
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $phone;
+    private $phone = "";
 
     /**
      * @ORM\Column(type="string", length=1000)
      */
-    private $address;
+    private $address = "";
 
     public function __construct()
     {

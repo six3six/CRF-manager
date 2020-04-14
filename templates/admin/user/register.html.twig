@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CRFM - Création d'un utilisateur{% endblock %}
+{% block body %}
+    {% include "navbar.html.twig" %}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('planning-edit') }}
+    {% endblock %}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('planning-edit') }}
+    {% endblock %}
+
+
+    <div class="container">
+        <h1><strong>Création </strong> d'un utilisateur</h1>
+        {{ form(form) }}
+    </div>
+
+
+{% endblock %}
