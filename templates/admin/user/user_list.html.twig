@@ -15,8 +15,7 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Prénom</th>
-                <th scope="col">Nom</th>
+                <th scope="col">Nom d'affichage</th>
                 <th scope="col">Nom d'utilisateur</th>
                 <th scope="col">Action</th>
             </tr>
@@ -25,8 +24,7 @@
             {% for user in users %}
                 <tr>
                     <td>{{ user.id }}</td>
-                    <td>{{ user.firstName }}</td>
-                    <td>{{ user.lastname|upper }}</td>
+                    <td>{{ user.displayName }}</td>
                     <td>{{ user.username }}</td>
                     <td><a href="{{ path('admin_user_edit', {"username": user.username}) }}">Modifier</a></td>
                 </tr>

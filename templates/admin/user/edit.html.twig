@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CRFM - Planning{% endblock %}
+{% block body %}
+    {% include "navbar.html.twig" %}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('planning-edit') }}
+    {% endblock %}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('planning-edit') }}
+    {% endblock %}
+
+
+    <div class="container">
+        <h1><strong>Modifier</strong> Utilisateur <strong>{{ user.username }}</strong></h1>
+        {{ form(form) }}
+        {% if delete %}
+            <a class="btn btn-outline-danger btn-delete"
+               href="{{ path('admin_user_delete', {'username': user.username}) }}">Supprimer</a>
+        {% endif %}
+    </div>
+
+
+{% endblock %}

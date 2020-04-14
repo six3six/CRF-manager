@@ -7,10 +7,12 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
 class User implements UserInterface
 {
@@ -55,7 +57,7 @@ class User implements UserInterface
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Skill", inversedBy="users")
      */
-    private $skils;
+    private $skills;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="created_by")
@@ -89,7 +91,7 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->skils = new ArrayCollection();
+        $this->skills = new ArrayCollection();
         $this->created_event = new ArrayCollection();
         $this->events = new ArrayCollection();
         $this->availabilities = new ArrayCollection();
@@ -216,24 +218,24 @@ class User implements UserInterface
     /**
      * @return Collection|Skill[]
      */
-    public function getSkils(): Collection
+    public function getSkills(): Collection
     {
-        return $this->skils;
+        return $this->skills;
     }
 
-    public function addSkil(Skill $skil): self
+    public function addSkill(Skill $skill): self
     {
-        if (!$this->skils->contains($skil)) {
-            $this->skils[] = $skil;
+        if (!$this->skills->contains($skill)) {
+            $this->skills[] = $skill;
         }
 
         return $this;
     }
 
-    public function removeSkil(Skill $skil): self
+    public function removeSkill(Skill $skill): self
     {
-        if ($this->skils->contains($skil)) {
-            $this->skils->removeElement($skil);
+        if ($this->skills->contains($skill)) {
+            $this->skills->removeElement($skill);
         }
 
         return $this;

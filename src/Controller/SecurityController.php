@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
+use App\Form\UserInfoType;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\HttpFoundation\Request;
 
 class SecurityController extends AbstractController
 {
@@ -34,11 +36,34 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/profil", name="app_profil")
+     * @Route("/profil", name="user_profil")
+     * @param Request $request
+     * @return Response
      */
-    public function profil()
+    public function user_edit(Request $request)
     {
-        return $this->render("security/profil.html.twig", ["error" => ""]);
+        $user = $this->getUser();
+        $form = $this->createForm(UserInfoType::class, $user);
+        $form->remove("skills");
+        $form->remove("display_name");
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('admin_user_view');
+        }
+
+        return $this->render('admin/user/edit.html.twig', [
+            'form' => $form->createView(),
+            'delete' => true,
+            "user" => $user
+        ]);
     }
 
     /**
@@ -84,6 +109,6 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }

@@ -7,6 +7,7 @@ use App\Entity\Skill;
 use App\Entity\User;
 use App\Form\EventType;
 use App\Form\SkillType;
+use App\Form\UserInfoType;
 use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,85 +34,15 @@ class   AdminController extends AbstractController
     public function user_list_api()
     {
         $userRepo = $this->getDoctrine()->getRepository(User::class);
-        $all_users = $userRepo->findAll();
+        $users = $userRepo->findAll();
         $ret = array();
-        foreach ($all_users as $user) {
+        foreach ($users as $user) {
             array_push($ret, array(
-                "name" => $user->getFormattedName(),
+                "name" => $user->getDisplayName(),
                 "username" => $user->getUsername()
             ));
         }
         return new JsonResponse($ret);
-    }
-
-    /**
-     * @Route("/admin/users", name="admin_user_list")
-     */
-    public function user_list()
-    {
-        $userRepo = $this->getDoctrine()->getRepository(User::class);
-        $all_users = $userRepo->findAll();
-        return $this->render('admin/user/user_list.html.twig', [
-            'controller_name' => 'AdminController',
-            "users" => $all_users,
-        ]);
-    }
-
-    /**
-     * @Route("/admin/user/{username}/edit", name="admin_user_edit", methods={"GET"})
-     * @param $username
-     * @param string $error
-     * @return Response
-     */
-    public function user_edit($username, $error = "")
-    {
-        $userRepo = $this->getDoctrine()->getRepository(User::class);
-        $user = $userRepo->findOneBy(["username" => $username]);
-        if ($user == null) throw new NotFoundHttpException("Utilisateur non trouvé");
-        return $this->render('admin/user/user_edit.html.twig', [
-            'controller_name' => 'AdminController',
-            "user" => $user,
-            "error" => $error
-        ]);
-    }
-
-    /**
-     * @Route("/admin/user/{username}/edit", name="admin_user_edit_save", methods={"POST"})
-     * @param Request $request
-     * @param $username
-     * @return Response
-     */
-    public function user_edit_save(Request $request, $username)
-    {
-        $userRepo = $this->getDoctrine()->getRepository(User::class);
-        $user = $userRepo->findOneBy(["username" => $username]);
-        if ($user == null) throw new NotFoundHttpException("Utilisateur non trouvé");
-
-        $keys = $request->request->keys();
-        $error = "";
-        $error .= !in_array("address", $keys) ? "Il manque le champ adresse<br/>" : "";
-        $error .= !in_array("email", $keys) ? "Il manque le champ email<br/>" : "";
-        $error .= !in_array("first_name", $keys) ? "Il manque le champ prénom<br/>" : "";
-        $error .= !in_array("last_name", $keys) ? "Il manque le champ nom de famille<br/>" : "";
-        $error .= !in_array("cellphone", $keys) ? "Il manque le champ numéro de téléphone portable<br/>" : "";
-        $error .= !in_array("phone", $keys) ? "Il manque le champ numéro de téléphone fixe<br/>" : "";
-
-        $new_user_data = $request->request;
-
-        if ($error == "") {
-            $user->setAddress($new_user_data->get("address"));
-            $user->setEmail($new_user_data->get("email"));
-            $user->setFirstName($new_user_data->get("first_name"));
-            $user->setLastname($new_user_data->get("last_name"));
-            $user->setCellphone($new_user_data->get("cellphone"));
-            $user->setPhone($new_user_data->get("phone"));
-            if (in_array("is_admin", $keys) and $new_user_data->get("is_admin") == "on")
-                $user->setRoles(["ROLE_ADMIN"]);
-            $this->getDoctrine()->getManager()->persist($user);
-            $this->getDoctrine()->getManager()->flush();
-        }
-
-        return $this->user_edit($username, $error);
     }
 
     /**
@@ -148,6 +79,62 @@ class   AdminController extends AbstractController
         }
 
         return new JsonResponse($ret);
+    }
+
+    /**
+     * @Route("/admin/user", name="admin_user_view")
+     */
+    public function user_view()
+    {
+        $repo = $this->getDoctrine()->getRepository(User::class);
+        $users = $repo->findAll();
+        return $this->render('admin/user/user_list.html.twig', [
+            "users" => $users,
+        ]);
+    }
+
+    /**
+     * @Route("/admin/user/delete/{username}", name="admin_user_delete")
+     */
+    public function user_delete($username)
+    {
+        $repo = $this->getDoctrine()->getRepository(User::class);
+        $user = $repo->find($username);
+        if ($user == null) throw new NotFoundHttpException("Utilisateur non trouvé");
+        $this->getDoctrine()->getManager()->remove($user);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute("admin_user_view");
+    }
+
+    /**
+     * @Route("/admin/user/{username}", name="admin_user_edit")
+     * @param Request $request
+     * @param $username
+     * @return Response
+     */
+    public function user_edit(Request $request, $username)
+    {
+        $repo = $this->getDoctrine()->getRepository(User::class);
+        $user = $repo->findOneBy(["username" => $username]);
+        if ($user == null) throw new NotFoundHttpException("Utilisateur non trouvé : " . $username);
+        $form = $this->createForm(UserInfoType::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('admin_user_view');
+        }
+
+        return $this->render('admin/user/edit.html.twig', [
+            'form' => $form->createView(),
+            'delete' => true,
+            "user" => $user
+        ]);
     }
 
     /**

@@ -17,7 +17,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ path('admin_timeline') }}">Timeline</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ path('admin_user_list') }}">Gérer les utilisateurs</a>
+                        <a class="dropdown-item" href="{{ path('admin_user_view') }}">Gérer les utilisateurs</a>
                         <a class="dropdown-item" href="{{ path('admin_events_view') }}">Gérer les événements</a>
                         <a class="dropdown-item" href="{{ path('admin_skill_view') }}">Gérer les compétences</a>
 
@@ -29,7 +29,7 @@
     </div>
 
     {% if app.user is not null %}
-        <a href="{{ path('app_login') }}">
+        <a href="{{ path('user_profil') }}">
             <span class="navbar-text font-weight-bold">{{ app.user.displayName }}</span>
         </a>
 
@@ -38,6 +38,10 @@
                 <a class="nav-link" href="{{ path('app_logout') }}">Se d&eacute;connecter</a>
             </li>
         </ul>
+    {% else %}
+        <a href="{{ path('app_login') }}">
+            <span class="navbar-text font-weight-bold">Login</span>
+        </a>
     {% endif %}
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
