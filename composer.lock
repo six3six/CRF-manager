@@ -1,20 +1,20 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
-    ],
-    "content-hash": "1352a2eeccb6defefa717ed55fb47a86",
-    "packages": [
-        {
-            "name": "doctrine/annotations",
-            "version": "1.10.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/annotations.git",
-                "reference": "5eb79f3dbdffed6544e1fc287572c0f462bd29bb"
-            },
-            "dist": {
+  "_readme": [
+    "This file locks the dependencies of your project to a known state",
+    "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+    "This file is @generated automatically"
+  ],
+  "content-hash": "8718feac1afbcdcc2cc714e2f3ec56a6",
+  "packages": [
+    {
+      "name": "doctrine/annotations",
+      "version": "1.10.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/doctrine/annotations.git",
+        "reference": "5eb79f3dbdffed6544e1fc287572c0f462bd29bb"
+      },
+      "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/annotations/zipball/5eb79f3dbdffed6544e1fc287572c0f462bd29bb",
                 "reference": "5eb79f3dbdffed6544e1fc287572c0f462bd29bb",
@@ -5893,26 +5893,72 @@
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
+              {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+              }
             ],
-            "description": "Symfony Yaml Component",
-            "homepage": "https://symfony.com",
-            "time": "2020-03-30T11:42:42+00:00"
+          "description": "Symfony Yaml Component",
+          "homepage": "https://symfony.com",
+          "time": "2020-03-30T11:42:42+00:00"
         },
-        {
-            "name": "twig/extra-bundle",
-            "version": "v3.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/twigphp/twig-extra-bundle.git",
-                "reference": "6eaf1637abe6b68518e7e0949ebb84e55770d5c6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/6eaf1637abe6b68518e7e0949ebb84e55770d5c6",
+    {
+      "name": "symfonycasts/reset-password-bundle",
+      "version": "v1.0.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/SymfonyCasts/reset-password-bundle.git",
+        "reference": "5eeaee7b72fba730ed70334b86f3ed3b4614e0a5"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/SymfonyCasts/reset-password-bundle/zipball/5eeaee7b72fba730ed70334b86f3ed3b4614e0a5",
+        "reference": "5eeaee7b72fba730ed70334b86f3ed3b4614e0a5",
+        "shasum": ""
+      },
+      "require": {
+        "php": "^7.2",
+        "symfony/config": "^4.4 | ^5.0",
+        "symfony/dependency-injection": "^4.4 | ^5.0",
+        "symfony/http-kernel": "^4.4 | ^5.0"
+      },
+      "conflict": {
+        "doctrine/orm": "<2.7",
+        "symfony/framework-bundle": "<4.4",
+        "symfony/http-foundation": "<4.4"
+      },
+      "require-dev": {
+        "doctrine/doctrine-bundle": "^2.0",
+        "doctrine/orm": "^2.7",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "symfony/framework-bundle": "^5.0",
+        "symfony/phpunit-bridge": "^5.0",
+        "vimeo/psalm": "^3.8"
+      },
+      "type": "symfony-bundle",
+      "autoload": {
+        "psr-4": {
+          "SymfonyCasts\\Bundle\\ResetPassword\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "description": "Symfony bundle that adds password reset functionality.",
+      "time": "2020-04-05T10:38:41+00:00"
+    },
+    {
+      "name": "twig/extra-bundle",
+      "version": "v3.0.3",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/twigphp/twig-extra-bundle.git",
+        "reference": "6eaf1637abe6b68518e7e0949ebb84e55770d5c6"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/6eaf1637abe6b68518e7e0949ebb84e55770d5c6",
                 "reference": "6eaf1637abe6b68518e7e0949ebb84e55770d5c6",
                 "shasum": ""
             },
@@ -6186,30 +6232,30 @@
         }
     ],
     "packages-dev": [
-        {
-          "name": "nikic/php-parser",
-          "version": "v4.4.0",
-          "source": {
-            "type": "git",
-            "url": "https://github.com/nikic/PHP-Parser.git",
-            "reference": "bd43ec7152eaaab3bd8c6d0aa95ceeb1df8ee120"
-          },
-          "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/bd43ec7152eaaab3bd8c6d0aa95ceeb1df8ee120",
-            "reference": "bd43ec7152eaaab3bd8c6d0aa95ceeb1df8ee120",
-            "shasum": ""
-          },
-            "require": {
-                "ext-tokenizer": "*",
-                "php": ">=7.0"
-            },
-            "require-dev": {
-                "ircmaxell/php-yacc": "0.0.5",
-                "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0"
-            },
-            "bin": [
-                "bin/php-parse"
+      {
+        "name": "nikic/php-parser",
+        "version": "v4.4.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/nikic/PHP-Parser.git",
+          "reference": "bd43ec7152eaaab3bd8c6d0aa95ceeb1df8ee120"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/bd43ec7152eaaab3bd8c6d0aa95ceeb1df8ee120",
+          "reference": "bd43ec7152eaaab3bd8c6d0aa95ceeb1df8ee120",
+          "shasum": ""
+        },
+        "require": {
+          "ext-tokenizer": "*",
+          "php": ">=7.0"
+        },
+        "require-dev": {
+          "ircmaxell/php-yacc": "0.0.5",
+          "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0"
+        },
+        "bin": [
+          "bin/php-parse"
             ],
             "type": "library",
             "extra": {
@@ -6236,7 +6282,7 @@
                 "parser",
                 "php"
             ],
-          "time": "2020-04-10T16:34:50+00:00"
+        "time": "2020-04-10T16:34:50+00:00"
         },
         {
             "name": "symfony/browser-kit",
