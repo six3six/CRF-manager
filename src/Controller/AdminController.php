@@ -29,7 +29,9 @@ class   AdminController extends AbstractController
      */
     public function index()
     {
-        return $this->render('admin/timeline.html.twig');
+        $repo = $this->getDoctrine()->getRepository(Skill::class);
+        $skills = $repo->findAll();
+        return $this->render('admin/timeline.html.twig', ["skills" => $skills]);
     }
 
     /**
@@ -59,8 +61,6 @@ class   AdminController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
-
             return $this->redirectToRoute("admin_user_view");
         }
 
@@ -78,9 +78,17 @@ class   AdminController extends AbstractController
         $users = $userRepo->findAll();
         $ret = array();
         foreach ($users as $user) {
+            /**
+             * @var User $user
+             */
+            $skills = array();
+            foreach ($user->getSkills() as $skill) {
+                $skills[$skill->getId()] = true;
+            }
             array_push($ret, array(
                 "name" => $user->getDisplayName(),
-                "username" => $user->getUsername()
+                "username" => $user->getUsername(),
+                "skills" => $skills
             ));
         }
         return new JsonResponse($ret);
@@ -183,8 +191,7 @@ class   AdminController extends AbstractController
      */
     public function events_view()
     {
-        return $this->render('admin/event/event.html.twig', [
-        ]);
+        return $this->render('admin/event/event.html.twig');
     }
 
     /**
@@ -317,7 +324,6 @@ class   AdminController extends AbstractController
     /**
      * @Route("/admin/skill/new", name="admin_skill_new")
      * @param Request $request
-     * @param Event $event
      * @return Response
      */
     public function skill_new(Request $request)
@@ -327,6 +333,7 @@ class   AdminController extends AbstractController
         $form = $this->createForm(SkillType::class, $skill);
 
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $skill = $form->getData();
@@ -369,6 +376,7 @@ class   AdminController extends AbstractController
         $repo = $this->getDoctrine()->getRepository(Skill::class);
         $skill = $repo->find($id);
         if ($skill == null) throw new NotFoundHttpException("Compétence non trouvée : " . $id);
+
         $form = $this->createForm(SkillType::class, $skill);
 
         $form->handleRequest($request);

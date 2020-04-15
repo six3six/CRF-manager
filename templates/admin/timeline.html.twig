@@ -11,6 +11,22 @@
     {% include "navbar.html.twig" %}
     <div class="container">
         <h1>Timeline</h1>
-        <div id="visualization"></div>
+    </div>
+    <div class="container-fluid timeline">
+        <div class="row">
+            <div class="filter-col">
+                <strong>Compétences</strong>
+                {% for skill in skills %}
+                    <div class="form-group">
+                        <input type="checkbox" id="filter_{{ skill.id }}" class="form-check-input filter-check">
+                        <label class="form-check-label" for="filter_{{ skill.id }}">{{ skill.name }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <div id="visualization"></div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}
