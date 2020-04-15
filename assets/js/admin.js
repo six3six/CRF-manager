@@ -16,7 +16,7 @@ $(function () {
         stack: true,
         horizontalScroll: true,
         verticalScroll: true,
-        zoomKey: "ctrlKey"
+        zoomKey: "ctrlKey",
     };
     let groups = new DataSet();
     let items = new DataSet();
@@ -29,7 +29,6 @@ $(function () {
             });
             $.getJSON("/admin/user/" + user.username + "/planning", function (planning_els) {
                 planning_els.forEach(function (planning_el) {
-                    console.log(planning_el.type === "availability");
                     if (planning_el.type === "availability"){
                         planning_el.name = "Disponibilité";
                         planning_el.className = "av_box";
@@ -37,7 +36,7 @@ $(function () {
                         planning_el.className = "ev_box";
                     }
                     items.add({
-                        id: planning_el.id,
+                        id: planning_el.id + user.username,
                         group: user.username,
                         start: new Date(planning_el.start),
                         end: new Date(planning_el.stop),
@@ -46,13 +45,20 @@ $(function () {
                     });
                 });
             });
-        })
+        });
+        timeline.setWindow(start, stop);
     });
     // create a Timeline
     let container = document.getElementById('visualization');
     let timeline = new Timeline(container, null, options);
     timeline.setGroups(groups);
     timeline.setItems(items);
+    let start = new Date();
+    start.setHours(0, 0);
+    let stop = new Date();
+    stop.setHours(24, 0);
+    console.log(start, stop);
+
 
 });
 

@@ -27,9 +27,9 @@ class UserInfoType extends AbstractType
                 "format" => "dd/MM/yyyy HH:mm",
                 "html5" => false
             ])
-            ->add('cellphone', TelType::class)
-            ->add('phone', TelType::class)
-            ->add('address', TextareaType::class)
+            ->add('cellphone', TelType::class, ["required" => false])
+            ->add('phone', TelType::class, ["required" => false])
+            ->add('address', TextareaType::class, ["required" => false])
             ->add('skills', EntityType::class, [
                 'class' => Skill::class,
                 'choice_label' => 'name',
