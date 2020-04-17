@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,24 +38,24 @@ class Availability
         return $this->id;
     }
 
-    public function getStart(): ?\DateTimeInterface
+    public function getStart(): ?DateTimeInterface
     {
         return $this->start;
     }
 
-    public function setStart(\DateTimeInterface $start): self
+    public function setStart(DateTimeInterface $start): self
     {
         $this->start = $start;
 
         return $this;
     }
 
-    public function getStop(): ?\DateTimeInterface
+    public function getStop(): ?DateTimeInterface
     {
         return $this->stop;
     }
 
-    public function setStop(\DateTimeInterface $stop): self
+    public function setStop(DateTimeInterface $stop): self
     {
         $this->stop = $stop;
 

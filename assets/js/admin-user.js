@@ -1,7 +1,4 @@
 import '../css/planning.scss';
-
-require("core-js");
-
 import {Calendar} from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -16,6 +13,8 @@ import '@fullcalendar/timegrid/main.css';
 import '@fullcalendar/list/main.css';
 
 import $ from 'jquery';
+
+require("core-js");
 
 let dataSource = "/planning/source/";
 $(function () {
