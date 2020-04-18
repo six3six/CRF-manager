@@ -11,8 +11,6 @@ import feather from "feather-icons"
 import '../css/planning.scss';
 import "jquery-datetimepicker/build/jquery.datetimepicker.min.css";
 
-require("core-js");
-
 require("jquery-datetimepicker/build/jquery.datetimepicker.full.min");
 
 
@@ -138,7 +136,6 @@ $(function () {
             }
             return str;
         }
-
         return formatNumber(date.getDate()) + "/" + formatNumber(date.getMonth() + 1) + "/" + date.getFullYear();
     }
 

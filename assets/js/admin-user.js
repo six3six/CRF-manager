@@ -14,7 +14,6 @@ import '@fullcalendar/list/main.css';
 
 import $ from 'jquery';
 
-require("core-js");
 
 let dataSource = "/planning/source/";
 $(function () {

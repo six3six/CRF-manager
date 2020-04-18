@@ -2,7 +2,6 @@ import '../css/planning.scss';
 import $ from 'jquery';
 import "jquery-datetimepicker/build/jquery.datetimepicker.min.css";
 
-require("core-js");
 
 require("jquery-datetimepicker/build/jquery.datetimepicker.full.min");
 
