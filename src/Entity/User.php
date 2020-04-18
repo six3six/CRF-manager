@@ -65,11 +65,6 @@ class User implements UserInterface
     private $created_event;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Event", mappedBy="registered_users")
-     */
-    private $events;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Availability", mappedBy="user", orphanRemoval=true)
      */
     private $availabilities;
@@ -93,7 +88,6 @@ class User implements UserInterface
     {
         $this->skills = new ArrayCollection();
         $this->created_event = new ArrayCollection();
-        $this->events = new ArrayCollection();
         $this->availabilities = new ArrayCollection();
         $d = new DateTime();
         $d->setTimestamp(time());
@@ -236,65 +230,6 @@ class User implements UserInterface
     {
         if ($this->skills->contains($skill)) {
             $this->skills->removeElement($skill);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Event[]
-     */
-    public function getCreatedEvent(): Collection
-    {
-        return $this->created_event;
-    }
-
-    public function addCreatedEvent(Event $createdEvent): self
-    {
-        if (!$this->created_event->contains($createdEvent)) {
-            $this->created_event[] = $createdEvent;
-            $createdEvent->setCreatedBy($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCreatedEvent(Event $createdEvent): self
-    {
-        if ($this->created_event->contains($createdEvent)) {
-            $this->created_event->removeElement($createdEvent);
-            // set the owning side to null (unless already changed)
-            if ($createdEvent->getCreatedBy() === $this) {
-                $createdEvent->setCreatedBy(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Event[]
-     */
-    public function getEvents(): Collection
-    {
-        return $this->events;
-    }
-
-    public function addEvent(Event $event): self
-    {
-        if (!$this->events->contains($event)) {
-            $this->events[] = $event;
-            $event->addRegisteredUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEvent(Event $event): self
-    {
-        if ($this->events->contains($event)) {
-            $this->events->removeElement($event);
-            $event->removeRegisteredUser($this);
         }
 
         return $this;

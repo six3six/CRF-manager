@@ -34,19 +34,26 @@ class Event
      */
     private $created_by;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="events")
-     */
-    private $registered_users;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Availability", mappedBy="attached_to")
+     */
+    private $attached_availabilities;
+
     public function __construct()
     {
         $this->registered_users = new ArrayCollection();
+        $this->attached_availabilities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,32 +97,6 @@ class Event
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getRegisteredUsers(): Collection
-    {
-        return $this->registered_users;
-    }
-
-    public function addRegisteredUser(User $registeredUser): self
-    {
-        if (!$this->registered_users->contains($registeredUser)) {
-            $this->registered_users[] = $registeredUser;
-        }
-
-        return $this;
-    }
-
-    public function removeRegisteredUser(User $registeredUser): self
-    {
-        if ($this->registered_users->contains($registeredUser)) {
-            $this->registered_users->removeElement($registeredUser);
-        }
-
-        return $this;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
@@ -124,6 +105,49 @@ class Event
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Availability[]
+     */
+    public function getAttachedAvailabilities(): Collection
+    {
+        return $this->attached_availabilities;
+    }
+
+    public function addAttachedAvailability(Availability $attachedAvailability): self
+    {
+        if (!$this->attached_availabilities->contains($attachedAvailability)) {
+            $this->attached_availabilities[] = $attachedAvailability;
+            $attachedAvailability->setAttachedTo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttachedAvailability(Availability $attachedAvailability): self
+    {
+        if ($this->attached_availabilities->contains($attachedAvailability)) {
+            $this->attached_availabilities->removeElement($attachedAvailability);
+            // set the owning side to null (unless already changed)
+            if ($attachedAvailability->getAttachedTo() === $this) {
+                $attachedAvailability->setAttachedTo(null);
+            }
+        }
 
         return $this;
     }

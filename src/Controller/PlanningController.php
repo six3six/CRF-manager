@@ -60,7 +60,7 @@ class PlanningController extends AbstractController
                 "start" => $availability->getStart()->format(PlanningController::PLANNING_FORMAT),
                 "end" => $availability->getStop()->format(PlanningController::PLANNING_FORMAT),
                 "url" => "/planning/availability/" . $availability->getId(),
-                "backgroundColor" => "blue",
+                "backgroundColor" => "green",
             );
             array_push($calendar, $f_event);
         }

@@ -3,8 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Event;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,12 +18,6 @@ class EventType extends AbstractType
             ->add('name')
             ->add('start', DateTimeType::class, $date_options)
             ->add('stop', DateTimeType::class, $date_options)
-            ->add('registered_users', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'displayName',
-                'multiple' => true,
-                'expanded' => false,
-            ])
             ->add('save', SubmitType::class);
     }
 

@@ -33,6 +33,16 @@ class Availability
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="attached_availabilities")
+     */
+    private $attached_to;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $state;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +80,30 @@ class Availability
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getAttachedTo(): ?Event
+    {
+        return $this->attached_to;
+    }
+
+    public function setAttachedTo(?Event $attached_to): self
+    {
+        $this->attached_to = $attached_to;
+
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

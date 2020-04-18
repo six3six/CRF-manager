@@ -113,7 +113,7 @@ class   AdminController extends AbstractController
                 "start" => $av->getStart()->format(DateTime::ISO8601),
                 "stop" => $av->getStop()->format(DateTime::ISO8601),
                 "id" => $av->getId(),
-                "backgroundColor" => "blue",
+                "backgroundColor" => "green",
             ));
         }
         foreach ($user->getEvents() as $ev) {
