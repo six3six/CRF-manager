@@ -8,6 +8,7 @@
     "@symfony/webpack-encore": "^0.28.3",
     "bootstrap": "^4.4.1",
     "core-js": "^3.6.4",
+    "feather-icons": "^4.28.0",
     "fullcalendar": "^3.10.1",
     "jquery": "^3.4.1",
     "jquery-datetimepicker": "^2.5.21",

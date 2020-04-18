@@ -16,9 +16,6 @@ $(function () {
     console.log(datepickers);
     for (let i = 0; i < datepickers.length; i++) {
         let datep = $(datepickers[i]);
-        let date_val = new Date(datep.val());
-
-        console.log(datep);
         datep.attr("type", 'text');
         datep.datetimepicker(picker_options);
     }

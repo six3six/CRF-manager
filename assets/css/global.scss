@@ -18,11 +18,15 @@
   margin-top: 10px;
 }
 
-.filter-col {
-  margin-left: 25px;
-  width: 160px;
+
+.timeline-controls {
+  //float: right;
+  margin-bottom: 10px;
+  max-width: 500px;
+  margin-right: 10px;
 }
 
-.timeline {
-  margin: 10px;
+.col-filter {
+  overflow: auto;
 }
+

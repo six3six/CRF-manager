@@ -12,21 +12,43 @@
     <div class="container">
         <h1>Timeline</h1>
     </div>
-    <div class="container-fluid timeline">
+
+    <div class="container-fluid">
+
         <div class="row">
-            <div class="filter-col">
-                <strong>Compétences</strong>
-                {% for skill in skills %}
-                    <div class="form-group">
-                        <input type="checkbox" id="filter_{{ skill.id }}" class="form-check-input filter-check">
-                        <label class="form-check-label" for="filter_{{ skill.id }}">{{ skill.name }}</label>
-                    </div>
-                {% endfor %}
+            <div class="col col-lg-2 col-filter col-sm-5">
+                <div class="container">
+                    <form class="form">
+                        <strong>Compétences</strong>
+                        {% for skill in skills %}
+                            <div class="form-group">
+                                <input type="checkbox" id="filter_{{ skill.id }}" class="form-check-input filter-check">
+                                <label class="form-check-label" for="filter_{{ skill.id }}">{{ skill.name }}</label>
+                            </div>
+                        {% endfor %}
+                    </form>
+                </div>
+
             </div>
-            <div class="col">
+            <div class="col-lg-10 col-sm-12">
+                <div class="row justify-content-end">
+                    <div class="timeline-controls ">
+                        <div class="input-group">
+
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-primary" id="today">Aujourd'hui</button>
+                                <button class="btn btn-primary" id="remDay"><i data-feather="arrow-left"></i></button>
+                            </div>
+                            <input class="form-control" id="datepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" id="addDay"><i data-feather="arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="visualization"></div>
             </div>
         </div>
-
     </div>
 {% endblock %}
