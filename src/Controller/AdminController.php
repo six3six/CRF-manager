@@ -116,17 +116,6 @@ class   AdminController extends AbstractController
                 "backgroundColor" => "green",
             ));
         }
-        foreach ($user->getEvents() as $ev) {
-            array_push($ret, array(
-                "type" => "event",
-                "start" => $ev->getStart()->format(DateTime::ISO8601),
-                "stop" => $ev->getStop()->format(DateTime::ISO8601),
-                "id" => $ev->getId(),
-                "title" => $ev->getName(),
-                "backgroundColor" => "red",
-            ));
-        }
-
         return new JsonResponse($ret);
     }
 

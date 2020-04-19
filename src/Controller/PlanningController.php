@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\Availability;
+use App\Entity\Event;
 use App\Form\AvailabilityType;
 use DateTime;
 use Exception;
@@ -40,7 +41,7 @@ class PlanningController extends AbstractController
         $calendar = array();
         $user = $this->getUser();
 
-        $events = $user->getEvents();
+        $events = $this->getDoctrine()->getRepository(Event::class)->findAll();
         $availabilities = $user->getAvailabilities();
 
         foreach ($events as $event) {
@@ -64,7 +65,6 @@ class PlanningController extends AbstractController
             );
             array_push($calendar, $f_event);
         }
-
         return new JsonResponse($calendar);
     }
 
