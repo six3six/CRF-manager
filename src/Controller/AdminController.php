@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Availability;
 use App\Entity\Event;
 use App\Entity\Skill;
 use App\Entity\User;
@@ -274,8 +275,11 @@ class   AdminController extends AbstractController
     public function event_edit(Request $request, $id)
     {
         $repo = $this->getDoctrine()->getRepository(Event::class);
+        /**
+         * @var Event|null $event
+         */
         $event = $repo->find($id);
-        if ($event == null) throw new NotFoundHttpException("Disponibilité non trouvé : " . $id);
+        if ($event == null) throw new NotFoundHttpException("Evenement non trouvé : " . $id);
         $form = $this->createForm(EventType::class, $event);
 
         $form->handleRequest($request);
@@ -293,8 +297,38 @@ class   AdminController extends AbstractController
             'form' => $form->createView(),
             'delete' => true,
             "id" => $event->getId(),
-            "user" => $event->getCreatedBy()
+            "user" => $event->getCreatedBy(),
+            "availabilities" => $event->getAttachedAvailabilities()
         ]);
+    }
+
+    /**
+     * @Route("/admin/availability/{id}/{validation}", name="admin_availability_validate")
+     * @param Request $request
+     * @param int $id
+     * @param string validation
+     * @return Response
+     */
+    public function availability_validate(Request $request, int $id, string $validation)
+    {
+        $repo = $this->getDoctrine()->getRepository(Availability::class);
+        /**
+         * @var Availability|null $availability
+         */
+        $availability = $repo->find($id);
+        if ($availability == null) throw new NotFoundHttpException("Disponibilité non trouvée : " . $id);
+        if ($validation != "false") {
+            $availability->setState(Availability::STATE_VALIDATE);
+            $this->getDoctrine()->getManager()->persist($availability);
+        } else {
+            $this->getDoctrine()->getManager()->remove($availability);
+        }
+        $this->getDoctrine()->getManager()->flush();
+        $attached = $availability->getAttachedTo();
+        if ($attached == null)
+            return $this->redirectToRoute('admin_event_list');
+        else
+            return $this->redirectToRoute('admin_event_edit', ["id" => $attached->getId()]);
     }
 
 
