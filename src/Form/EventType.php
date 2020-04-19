@@ -18,6 +18,7 @@ class EventType extends AbstractType
             ->add('name')
             ->add('start', DateTimeType::class, $date_options)
             ->add('stop', DateTimeType::class, $date_options)
+            ->add("description")
             ->add('save', SubmitType::class);
     }
 

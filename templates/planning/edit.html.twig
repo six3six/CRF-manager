@@ -16,6 +16,14 @@
             {% if app.user.admin and user is defined %}
                 <h4>Disponiblité de <strong>{{ user.displayName }}</strong></h4>
             {% endif %}
+            {% if state is defined %}
+                <strong>Etat : </strong>
+                {% if state == constant('App\\Entity\\Availability::STATE_UNKNOWN') %}actuellement inconnu
+                {% elseif state == constant('App\\Entity\\Availability::STATE_MOD_WAITING') %} en attente de vérification de la modification
+                {% elseif state == constant('App\\Entity\\Availability::STATE_VALIDATE') %} validé
+                {% elseif state == constant('App\\Entity\\Availability::STATE_WAITING') %} en attente de vérification
+                {% endif %}
+            {% endif %}
         {% else %}
             <h1><strong>Ajouter</strong> une <strong>nouvelle</strong> disponibilité</h1>
         {% endif %}

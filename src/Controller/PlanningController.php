@@ -22,6 +22,7 @@ class PlanningController extends AbstractController
 {
     const PLANNING_FORMAT = "Y-m-d\TH:i:s";
     const SHOW_FORMAT = "d/m/Y H:i";
+    const SQL_FORMAT = "Y/m/d H:i:s";
 
     /**
      * @Route("/planning", name="planning")
@@ -56,12 +57,31 @@ class PlanningController extends AbstractController
         }
 
         foreach ($availabilities as $availability) {
+            /**
+             * @var Availability $availability
+             */
+            $backgnd = "";
+            $title = "Disponibilité ";
+            switch ($availability->getState()) {
+                case Availability::STATE_MOD_WAITING or Availability::STATE_WAITING:
+                    $backgnd = "orange";
+                    $title .= "(en cours de validation)";
+                    break;
+                case Availability::STATE_VALIDATE:
+                    $backgnd = "green";
+                    $title .= "(validé)";
+                    break;
+                default:
+                    $backgnd = "grey";
+                    $title .= "(inconnu)";
+                    break;
+            }
             $f_event = array(
-                "title" => "Disponibilité",
+                "title" => $title,
                 "start" => $availability->getStart()->format(PlanningController::PLANNING_FORMAT),
                 "end" => $availability->getStop()->format(PlanningController::PLANNING_FORMAT),
                 "url" => "/planning/availability/" . $availability->getId(),
-                "backgroundColor" => "green",
+                "backgroundColor" => $backgnd,
             );
             array_push($calendar, $f_event);
         }
@@ -128,12 +148,15 @@ class PlanningController extends AbstractController
     /**
      * @Route("/planning/availability/new/", name="planning_availability_new")
      * @param Request $request
-     * @param Availability $availability
+     * @param Availability|null $availability
      * @return Response
      */
     public function availability_new(Request $request, $availability = null)
     {
         if ($availability == null) $availability = new Availability();
+        /**
+         * @var Availability $availability
+         */
 
         $form = $this->createForm(AvailabilityType::class, $availability);
 
@@ -142,7 +165,10 @@ class PlanningController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $availability = $form->getData();
             $availability->setUser($this->getUser());
-
+            if ($availability->getAttachedTo() == null)
+                $availability->setState(Availability::STATE_VALIDATE);
+            else
+                $availability->setState(Availability::STATE_WAITING);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($availability);
             $entityManager->flush();
@@ -175,6 +201,11 @@ class PlanningController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $availability = $form->getData();
 
+            if ($availability->getAttachedTo() == null)
+                $availability->setState(Availability::STATE_VALIDATE);
+            else
+                $availability->setState(Availability::STATE_MOD_WAITING);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($availability);
             $entityManager->flush();
@@ -186,8 +217,8 @@ class PlanningController extends AbstractController
             'form' => $form->createView(),
             'delete' => true,
             "id" => $availability->getId(),
-            "user" => $availability->getUser()
+            "user" => $availability->getUser(),
+            "state" => $availability->getState()
         ]);
     }
-
 }

@@ -10,6 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Availability
 {
+    const STATE_UNKNOWN = 0;
+    const STATE_WAITING = 1;
+    const STATE_MOD_WAITING = 2;
+    const STATE_VALIDATE = 3;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -39,9 +43,9 @@ class Availability
     private $attached_to;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer", nullable=false)
      */
-    private $state;
+    private $state = self::STATE_UNKNOWN;
 
     public function getId(): ?int
     {
@@ -96,12 +100,12 @@ class Availability
         return $this;
     }
 
-    public function getState(): ?string
+    public function getState(): ?int
     {
         return $this->state;
     }
 
-    public function setState(?string $state): self
+    public function setState(?int $state): self
     {
         $this->state = $state;
 
