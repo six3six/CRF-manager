@@ -14,4 +14,25 @@
         <div id="calendar"></div>
     </div>
 
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalTitle">Event</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <strong>00/00/0000 00:00</strong> - <strong>00/00/0000 00:00</strong><br/>
+                    <span id="eventModalBody">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula, ligula sit amet ullamcorper lacinia, nunc orci laoreet ex, vitae mattis est purus non ipsum. Nulla aliquam, orci in consectetur suscipit, velit ante vestibulum ex, eleifend vehicula nibh sapien fringilla mi. Donec egestas dictum sagittis. Aliquam feugiat rutrum imperdiet. Vestibulum ut mauris commodo, venenatis mauris et, pharetra odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut enim orci, vulputate sit amet cursus varius, convallis id dolor. Integer facilisis elit rhoncus nulla euismod, ac finibus nibh varius. Aliquam sed erat maximus, ultricies sapien id, scelerisque.</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

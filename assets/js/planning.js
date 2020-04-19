@@ -15,6 +15,8 @@ import '@fullcalendar/list/main.css';
 import $ from 'jquery';
 
 
+require('bootstrap');
+
 let dataSource = "/planning/source";
 let dataInsert = "/planning/availability/";
 $(function () {
@@ -46,6 +48,11 @@ $(function () {
     });
     calendar.render();
 });
+
+var showEventModal = function () {
+    let eventModal = $("#eventModal");
+    eventModal.modal("show");
+}
 
 
 
