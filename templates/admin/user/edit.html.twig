@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CRFM - Planning{% endblock %}
+{% block title %}CRFM - {% trans %}Edit user{% endtrans %}{% endblock %}
 {% block body %}
     {% include "navbar.html.twig" %}
     {% block javascripts %}
@@ -12,11 +12,12 @@
 
 
     <div class="container">
-        <h1><strong>Modifier</strong> Utilisateur <strong>{{ user.username }}</strong></h1>
+        <h1><strong>{% trans %}Modify{% endtrans %}</strong> {% trans %}user{% endtrans %}
+            <strong>{{ user.username }}</strong></h1>
         {{ form(form) }}
         {% if delete %}
             <a class="btn btn-outline-danger btn-delete"
-               href="{{ path('admin_user_delete', {'username': user.username}) }}">Supprimer</a>
+               href="{{ path('admin_user_delete', {'username': user.username}) }}">{% trans %}Remove{% endtrans %}</a>
         {% endif %}
     </div>
 

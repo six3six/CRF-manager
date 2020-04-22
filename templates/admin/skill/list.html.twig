@@ -1,23 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CRFM - Admin{% endblock %}
-{% block javascripts %}
-    {{ encore_entry_script_tags('admin') }}
-{% endblock %}
-{% block stylesheets %}
-    {{ encore_entry_link_tags('admin') }}
-{% endblock %}
+{% block title %}CRFM - {% trans %}Manage skills{% endtrans %}{% endblock %}
 {% block body %}
     {% include "navbar.html.twig" %}
     <div class="container">
-        <h1>Gestion des compétences</h1>
+        <h1>{% trans %}Manage skills{% endtrans %}</h1>
+        <a href="{{ path('admin_skill_new') }}" class="btn btn-success">{% trans %}Add skill{% endtrans %}</a>
         <table class="table">
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Titre</th>
-                <th scope="col">Description</th>
-                <th scope="col">Action</th>
+                <th scope="col">{% trans %}Title{% endtrans %}</th>
+                <th scope="col">{% trans %}Description{% endtrans %}</th>
+                <th scope="col">{% trans %}Action{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
@@ -27,11 +22,11 @@
                     <td>{{ skill.name }}</td>
                     <td>{{ skill.description }}</td>
                     <td><a href="{{ path('admin_skill_edit', {'id': skill.id}) }}"
-                           class="btn btn-success">Modifier</a></td>
+                           class="btn btn-success">{% trans %}Modify{% endtrans %}</a></td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <a href="{{ path('admin_skill_new') }}" class="btn btn-success">Ajouter</a>
+
     </div>
 {% endblock %}

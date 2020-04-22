@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="IcwwUJV" resname="Planning">
+        <source>Planning</source>
+        <target>Planning</target>
+      </trans-unit>
+      <trans-unit id="rrCp9XE" resname="My planning">
+        <source>My planning</source>
+        <target>My planning</target>
+      </trans-unit>
+      <trans-unit id="K0Rrw1O" resname="Edit availability">
+        <source>Edit availability</source>
+        <target>Edit availability</target>
+      </trans-unit>
+      <trans-unit id="2U6vaUO" resname="Modify">
+        <source>Modify</source>
+        <target>Modify</target>
+      </trans-unit>
+      <trans-unit id="Z_MXjQF" resname="availability n°">
+        <source>availability n°</source>
+        <target>availability n°</target>
+      </trans-unit>
+      <trans-unit id="t6n5ZSh" resname="Availability of">
+        <source>Availability of</source>
+        <target>Availability of</target>
+      </trans-unit>
+      <trans-unit id="o7UMR2c" resname="State">
+        <source>State</source>
+        <target>State</target>
+      </trans-unit>
+      <trans-unit id="t2TNwOq" resname="Unknown">
+        <source>Unknown</source>
+        <target>Unknown</target>
+      </trans-unit>
+      <trans-unit id="bik6jAC" resname="Waiting">
+        <source>Waiting</source>
+        <target>Waiting</target>
+      </trans-unit>
+      <trans-unit id="9RYiBjG" resname="Valid">
+        <source>Valid</source>
+        <target>Valid</target>
+      </trans-unit>
+      <trans-unit id="n9coxmy" resname="Add">
+        <source>Add</source>
+        <target>Add</target>
+      </trans-unit>
+      <trans-unit id="VGm.M1K" resname="a new availability">
+        <source>a new availability</source>
+        <target>a new availability</target>
+      </trans-unit>
+      <trans-unit id="w4EvxKy" resname="Remove">
+        <source>Remove</source>
+        <target>Remove</target>
+      </trans-unit>
+      <trans-unit id="DiImtSN" resname="Welcome">
+        <source>Welcome</source>
+        <target>Welcome</target>
+      </trans-unit>
+      <trans-unit id="nWMiwfT" resname="Login">
+        <source>Login</source>
+        <target>Login</target>
+      </trans-unit>
+      <trans-unit id="D_jrvPb" resname="You are connected as">
+        <source>You are connected as</source>
+        <target>You are connected as</target>
+      </trans-unit>
+      <trans-unit id="rPxb54W" resname="Disconnect">
+        <source>Disconnect</source>
+        <target>Disconnect</target>
+      </trans-unit>
+      <trans-unit id="47ienTP" resname="Username">
+        <source>Username</source>
+        <target>Username</target>
+      </trans-unit>
+      <trans-unit id="588_9PF" resname="Password">
+        <source>Password</source>
+        <target>Password</target>
+      </trans-unit>
+      <trans-unit id="_TJnqhH" resname="Remember me">
+        <source>Remember me</source>
+        <target>Remember me</target>
+      </trans-unit>
+      <trans-unit id="Jxxi_i3" resname="My profile">
+        <source>My profile</source>
+        <target>My profile</target>
+      </trans-unit>
+      <trans-unit id="59PnafP" resname="Administrator">
+        <source>Administrator</source>
+        <target>Administrator</target>
+      </trans-unit>
+      <trans-unit id="lpzL089" resname="Email">
+        <source>Email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="ULbA6fD" resname="Cellphone">
+        <source>Cellphone</source>
+        <target>Cellphone</target>
+      </trans-unit>
+      <trans-unit id="Y9zriAC" resname="Phone">
+        <source>Phone</source>
+        <target>Phone</target>
+      </trans-unit>
+      <trans-unit id="Vu_PIJV" resname="Address">
+        <source>Address</source>
+        <target>Address</target>
+      </trans-unit>
+      <trans-unit id="RlVF2W9" resname="Change infos">
+        <source>Change infos</source>
+        <target>Change infos</target>
+      </trans-unit>
+      <trans-unit id="B8rhOi5" resname="Previous password">
+        <source>Previous password</source>
+        <target>Previous password</target>
+      </trans-unit>
+      <trans-unit id="PdnfREH" resname="New password">
+        <source>New password</source>
+        <target>New password</target>
+      </trans-unit>
+      <trans-unit id="vwAEIa6" resname="Confirm new password">
+        <source>Confirm new password</source>
+        <target>Confirm new password</target>
+      </trans-unit>
+      <trans-unit id="wcIksDz" resname="Admin">
+        <source>Admin</source>
+        <target>Admin</target>
+      </trans-unit>
+      <trans-unit id="nc.5jid" resname="Timeline">
+        <source>Timeline</source>
+        <target>Timeline</target>
+      </trans-unit>
+      <trans-unit id="WGBuWCR" resname="Manage users">
+        <source>Manage users</source>
+        <target>Manage users</target>
+      </trans-unit>
+      <trans-unit id="82AHFaH" resname="Manage skills">
+        <source>Manage skills</source>
+        <target>Manage skills</target>
+      </trans-unit>
+      <trans-unit id="ZtD1I6N" resname="Skills">
+        <source>Skills</source>
+        <target>Skills</target>
+      </trans-unit>
+      <trans-unit id="KwZcfJz" resname="Today">
+        <source>Today</source>
+        <target>Today</target>
+      </trans-unit>
+      <trans-unit id="vE210zd" resname="Add skill">
+        <source>Add skill</source>
+        <target>Add skill</target>
+      </trans-unit>
+      <trans-unit id="fozSBW2" resname="Title">
+        <source>Title</source>
+        <target>Title</target>
+      </trans-unit>
+      <trans-unit id="Um4Ah8w" resname="Description">
+        <source>Description</source>
+        <target>Description</target>
+      </trans-unit>
+      <trans-unit id="ZM.xMZ0" resname="Action">
+        <source>Action</source>
+        <target>Action</target>
+      </trans-unit>
+      <trans-unit id="INpZdLz" resname="Edit skill">
+        <source>Edit skill</source>
+        <target>Edit skill</target>
+      </trans-unit>
+      <trans-unit id="7HsTrdZ" resname="the skill n°">
+        <source>the skill n°</source>
+        <target>the skill n°</target>
+      </trans-unit>
+      <trans-unit id="FH0VHWp" resname="a new skill">
+        <source>a new skill</source>
+        <target>a new skill</target>
+      </trans-unit>
+      <trans-unit id="7sXHOh1" resname="Add user">
+        <source>Add user</source>
+        <target>Add user</target>
+      </trans-unit>
+      <trans-unit id="BbiNGPw" resname="Edit user">
+        <source>Edit user</source>
+        <target>Edit user</target>
+      </trans-unit>
+      <trans-unit id="BPiZbad" resname="user">
+        <source>user</source>
+        <target>user</target>
+      </trans-unit>
+      <trans-unit id="8G2hKMN" resname="Create user">
+        <source>Create user</source>
+        <target>Create user</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

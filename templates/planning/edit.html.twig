@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CRFM - Planning{% endblock %}
+{% block title %}CRFM - {% trans %}Edit availability{% endtrans %}{% endblock %}
 {% block javascripts %}
     {{ encore_entry_script_tags('planning-edit') }}
 {% endblock %}
@@ -12,24 +12,26 @@
 
     <div class="container">
         {% if id is defined %}
-            <h1><strong>Modifier</strong> la disponiblité numéro n°<strong>{{ id }}</strong></h1>
+            <h1><strong>{% trans %}Modify{% endtrans %}</strong> {% trans %}availability n°{% endtrans %}
+                <strong>{{ id }}</strong></h1>
             {% if app.user.admin and user is defined %}
-                <h4>Disponiblité de <strong>{{ user.displayName }}</strong></h4>
+                <h4>{% trans %}Availability of{% endtrans %} <strong>{{ user.displayName }}</strong></h4>
             {% endif %}
             {% if state is defined %}
-                <strong>Etat : </strong>
-                {% if state == constant('App\\Entity\\PlanningEntry::STATE_UNKNOWN') %}actuellement inconnu
-                {% elseif state == constant('App\\Entity\\PlanningEntry::STATE_MOD_WAITING') %} en attente de vérification de la modification
-                {% elseif state == constant('App\\Entity\\PlanningEntry::STATE_VALIDATE') %} validé
-                {% elseif state == constant('App\\Entity\\PlanningEntry::STATE_WAITING') %} en attente de vérification
+                <strong>{% trans %}State{% endtrans %} : </strong>
+                {% if state == constant('App\\Entity\\PlanningEntry::STATE_UNKNOWN') %}{% trans %}Unknown{% endtrans %}
+                {% elseif state == constant('App\\Entity\\PlanningEntry::STATE_MOD_WAITING') %}{% trans %}Waiting{% endtrans %}
+                {% elseif state == constant('App\\Entity\\PlanningEntry::STATE_VALIDATE') %}{% trans %}Valid{% endtrans %}
+                {% elseif state == constant('App\\Entity\\PlanningEntry::STATE_WAITING') %}{% trans %}Waiting{% endtrans %}
                 {% endif %}
             {% endif %}
         {% else %}
-            <h1><strong>Ajouter</strong> une <strong>nouvelle</strong> disponibilité</h1>
+            <h1><strong>{% trans %}Add{% endtrans %}</strong> {% trans %}a new availability{% endtrans %}</h1>
         {% endif %}
         {{ form(form) }}
         {% if delete %}
-            <a class="btn btn-outline-danger btn-delete" href="{{ path('planning_delete', {'id': id}) }}">Supprimer</a>
+            <a class="btn btn-outline-danger btn-delete"
+               href="{{ path('planning_delete', {'id': id}) }}">{% trans %}Remove{% endtrans %}</a>
         {% endif %}
     </div>
 

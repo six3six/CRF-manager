@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon profil{% endblock %}
+{% block title %}{% trans %}My profile{% endtrans %}{% endblock %}
 
 {% block body %}
     {% include "navbar.html.twig" %}
@@ -8,52 +8,52 @@
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
-        <h1 class="h3 mb-3 font-weight-normal">Mon profil</h1>
+        <h1 class="h3 mb-3 font-weight-normal">{% trans %}My profile{% endtrans %}</h1>
         <h4>{{ app.user.formattedName }} ({{ app.user.username }})</h4>
         {% if app.user.isAdmin %}
-            <h5 class="admin_marker">Admininistrateur</h5>
+            <h5 class="admin_marker">{% trans %}Administrator{% endtrans %}</h5>
         {% endif %}
 
         <form method="post" action="{{ path("app_chginfo") }}">
 
             <div class="form-group">
-                <label for="inputEmail">Email</label>
+                <label for="inputEmail">{% trans %}Email{% endtrans %}</label>
                 <input type="text" value="{{ app.user.email }}" name="email" id="inputEmail" class="form-control"
                        required>
             </div>
             <div class="form-group">
-                <label for="inputCellphone">Téléphone portable</label>
+                <label for="inputCellphone">{% trans %}Cellphone{% endtrans %}</label>
                 <input type="text" value="{{ app.user.cellphone }}" name="cellphone" id="inputCellphone"
                        class="form-control"
                        required>
             </div>
 
             <div class="form-group">
-                <label for="inputPhone">Téléphone fixe</label>
+                <label for="inputPhone">{% trans %}Phone{% endtrans %}</label>
                 <input type="text" value="{{ app.user.phone }}" name="phone" id="inputPhone" class="form-control"
                        required>
             </div>
             <div class="form-group">
-                <label for="inputAddress">Addresse</label>
+                <label for="inputAddress">{% trans %}Address{% endtrans %}</label>
                 <textarea class="form-control" name="address" id="inputAddress">{{ app.user.address }}</textarea>
             </div>
             <button class="btn btn-primary" type="submit">
-                Changer ses informations
+                {% trans %}Change infos{% endtrans %}
             </button>
         </form>
         <br>
 
         <form method="post" action="{{ path('app_chgpassword') }}">
             <div class="form-group">
-                <label for="inputPrevPassword">Ancien mot de passe</label>
+                <label for="inputPrevPassword">{% trans %}Previous password{% endtrans %}</label>
                 <input type="text" name="ancPassword" id="inputPrevPassword" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="inputNewPassword">Nouveau mot de passe</label>
+                <label for="inputNewPassword">{% trans %}New password{% endtrans %}</label>
                 <input type="text" name="newPassword" id="inputNewPassword" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="inputNewConfPassword">Confirmer le nouveau mot de passe</label>
+                <label for="inputNewConfPassword">{% trans %}Confirm new password{% endtrans %}</label>
                 <input type="text" name="confNewPassword" id="inputNewConfPassword" class="form-control" required>
             </div>
 

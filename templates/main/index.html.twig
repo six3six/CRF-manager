@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CRF-Manager Home{% endblock %}
+{% block title %}CRF - {% trans %}Welcome{% endtrans %}{% endblock %}
 
 {% block body %}
-{% include 'navbar.html.twig' %}
+    {% include 'navbar.html.twig' %}
     <div class="container">
-        <h1>Bienvenue</h1>
+        <h1>{% trans %}Welcome{% endtrans %}</h1>
     </div>
 {% endblock %}

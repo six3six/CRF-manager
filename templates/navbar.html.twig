@@ -5,20 +5,24 @@
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link"
-                   href="{{ path('planning') }}">Mon planning{% if knowTopic and topicActive == "planning" %}<span
-                        class="sr-only">(current)</span>{% endif %}</a>
+                   href="{{ path('planning') }}">{% trans %}My planning{% endtrans %}{% if knowTopic and topicActive == "planning" %}
+                        <span
+                                class="sr-only">(current)</span>{% endif %}</a>
             </li>
             {% if app.user is not null and app.user.admin %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Administration
+                        {% trans %}Admin{% endtrans %}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ path('admin_timeline') }}">Timeline</a>
+                        <a class="dropdown-item"
+                           href="{{ path('admin_timeline') }}">{% trans %}Timeline{% endtrans %}</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ path('admin_user_view') }}">Gérer les utilisateurs</a>
-                        <a class="dropdown-item" href="{{ path('admin_skill_view') }}">Gérer les compétences</a>
+                        <a class="dropdown-item"
+                           href="{{ path('admin_user_view') }}">{% trans %}Manage users{% endtrans %}</a>
+                        <a class="dropdown-item"
+                           href="{{ path('admin_skill_view') }}">{% trans %}Manage skills{% endtrans %}</a>
 
 
                     </div>
@@ -34,12 +38,12 @@
 
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_logout') }}">Se d&eacute;connecter</a>
+                <a class="nav-link" href="{{ path('app_logout') }}">{% trans %}Disconnect{% endtrans %}</a>
             </li>
         </ul>
     {% else %}
         <a href="{{ path('app_login') }}">
-            <span class="navbar-text font-weight-bold">Login</span>
+            <span class="navbar-text font-weight-bold">{% trans %}Login{% endtrans %}</span>
         </a>
     {% endif %}
 

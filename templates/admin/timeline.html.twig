@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CRFM - Admin{% endblock %}
+{% block title %}CRFM - {% trans %}Timeline{% endtrans %}{% endblock %}
 {% block javascripts %}
     {{ encore_entry_script_tags('admin') }}
 {% endblock %}
@@ -10,7 +10,7 @@
 {% block body %}
     {% include "navbar.html.twig" %}
     <div class="container">
-        <h1>Timeline</h1>
+        <h1>{% trans %}Timeline{% endtrans %}</h1>
     </div>
 
     <div class="container-fluid">
@@ -19,7 +19,7 @@
             <div class="col col-lg-2 col-filter col-sm-5">
                 <div class="container">
                     <form class="form">
-                        <strong>Compétences</strong>
+                        <strong>{% trans %}Skills{% endtrans %}</strong>
                         {% for skill in skills %}
                             <div class="form-group">
                                 <input type="checkbox" id="filter_{{ skill.id }}" class="form-check-input filter-check">
@@ -36,7 +36,8 @@
                         <div class="input-group">
 
                             <div class="input-group-prepend">
-                                <button class="btn btn-outline-primary" id="today">Aujourd'hui</button>
+                                <button class="btn btn-outline-primary"
+                                        id="today">{% trans %}Today{% endtrans %}</button>
                                 <button class="btn btn-primary" id="remDay"><i data-feather="arrow-left"></i></button>
                             </div>
                             <input class="form-control" id="datepicker">

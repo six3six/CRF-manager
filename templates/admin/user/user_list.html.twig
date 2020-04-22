@@ -1,17 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CRFM - Admin{% endblock %}
-{% block javascripts %}
-    {{ encore_entry_script_tags('admin') }}
-{% endblock %}
-{% block stylesheets %}
-    {{ encore_entry_link_tags('admin') }}
-{% endblock %}
+{% block title %}CRFM - {% trans %}Manage users{% endtrans %}{% endblock %}
 {% block body %}
     {% include "navbar.html.twig" %}
     <div class="container">
-        <h1>Gestion des utilisateurs</h1>
-        <a href="{{ path('admin_register') }}" class="btn btn-success">Ajouter un utilisateur</a>
+        <h1>{% trans %}Manage users{% endtrans %}</h1>
+        <a href="{{ path('admin_register') }}" class="btn btn-success">{% trans %}Add user{% endtrans %}</a><br/>
         <table class="table">
             <thead>
             <tr>
