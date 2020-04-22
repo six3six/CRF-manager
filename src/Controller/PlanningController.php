@@ -47,21 +47,29 @@ class PlanningController extends AbstractController
              * @var PlanningEntry $planningEntry
              */
             $backgnd = "";
-            $title = "Disponibilité ";
-            switch ($planningEntry->getState()) {
-                case PlanningEntry::STATE_MOD_WAITING or PlanningEntry::STATE_WAITING:
-                    $backgnd = "orange";
-                    $title .= "(en cours de validation)";
-                    break;
-                case PlanningEntry::STATE_VALIDATE:
-                    $backgnd = "green";
-                    $title .= "(validé)";
-                    break;
-                default:
-                    $backgnd = "grey";
-                    $title .= "(inconnu)";
-                    break;
+            $title = "";
+            if ($planningEntry->getIsEvent()) {
+                $title = "Evt:" . $planningEntry->getName() . " ";
+                switch ($planningEntry->getState()) {
+                    case PlanningEntry::STATE_MOD_WAITING:
+                    case PlanningEntry::STATE_WAITING:
+                        $backgnd = "orange";
+                        $title .= "(en cours de validation)";
+                        break;
+                    case PlanningEntry::STATE_VALIDATE:
+                        $backgnd = "red";
+                        $title .= "(validé)";
+                        break;
+                    default:
+                        $backgnd = "grey";
+                        $title .= "(inconnu)";
+                        break;
+                }
+            } else {
+                $backgnd = "green";
+                $title = "Disponibilité";
             }
+
             $f_event = array(
                 "title" => $title,
                 "start" => $planningEntry->getStart()->format(PlanningController::PLANNING_FORMAT),
@@ -123,32 +131,41 @@ class PlanningController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    public function entry_start_stop(Request $request, $start, $stop)
+    public function planning_entry_start_stop(Request $request, $start, $stop)
     {
         $planningEntry = new PlanningEntry();
-        $planningEntry->setStart(new DateTime($start));
-        $planningEntry->setStop(new DateTime($stop));
-        return $this->availability_new($request, $planningEntry);
+        try {
+            $planningEntry->setStart(new DateTime($start));
+            $planningEntry->setStop(new DateTime($stop));
+        } catch (Exception $e) {
+            $planningEntry->setStart((new DateTime())->setTimestamp($start));
+            $planningEntry->setStop((new DateTime())->setTimestamp($stop));
+        }
+
+        return $this->planning_entry($request, $planningEntry);
     }
 
     /**
      * @Route("/planning/entry/new/", name="planning_availability_new")
      * @param Request $request
      * @param PlanningEntry|null $planningEntry
+     * @param bool $new
      * @return Response
      */
-    public function availability_new(Request $request, $planningEntry = null)
+    public function planning_entry(Request $request, $planningEntry = null, $new = true)
     {
         if ($planningEntry == null) $planningEntry = new PlanningEntry();
-
+        /**
+         * @var PlanningEntry $planningEntry
+         */
         $form = $this->createForm(PlanningEntryType::class, $planningEntry);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $planningEntry = $form->getData();
-            $planningEntry->setUser($this->getUser());
-
+            if ($new)
+                $planningEntry->setUser($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($planningEntry);
             $entityManager->flush();
@@ -156,11 +173,20 @@ class PlanningController extends AbstractController
             return $this->redirectToRoute('planning');
         }
 
-
-        return $this->render('planning/edit.html.twig', [
-            'form' => $form->createView(),
-            'delete' => false,
-        ]);
+        if ($new) {
+            return $this->render('planning/edit.html.twig', [
+                'form' => $form->createView(),
+                'delete' => false,
+            ]);
+        } else {
+            return $this->render('planning/edit.html.twig', [
+                'form' => $form->createView(),
+                'delete' => true,
+                "id" => $planningEntry->getId(),
+                "user" => $planningEntry->getUser(),
+                "state" => $planningEntry->getState()
+            ]);
+        }
     }
 
     /**
@@ -169,7 +195,7 @@ class PlanningController extends AbstractController
      * @param $id
      * @return Response
      */
-    public function entry_edit(Request $request, $id)
+    public function planning_entry_edit(Request $request, $id)
     {
         $repo = $this->getDoctrine()->getRepository(PlanningEntry::class);
         /**
@@ -178,25 +204,7 @@ class PlanningController extends AbstractController
         $planningEntry = $repo->find($id);
         if ($planningEntry == null) throw new NotFoundHttpException("Disponibilité non trouvé");
         if ($planningEntry->getUser() != $this->getUser() && !$this->getUser()->isAdmin()) throw new AccessDeniedException();
-        $form = $this->createForm(PlanningEntryType::class, $planningEntry);
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $planningEntry = $form->getData();
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($planningEntry);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('planning');
-        }
-
-        return $this->render('planning/edit.html.twig', [
-            'form' => $form->createView(),
-            'delete' => true,
-            "id" => $planningEntry->getId(),
-            "user" => $planningEntry->getUser(),
-            "state" => $planningEntry->getState()
-        ]);
+        return $this->planning_entry($request, $planningEntry, false);
     }
 }

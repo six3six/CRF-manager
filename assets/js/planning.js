@@ -39,6 +39,7 @@ $(function () {
             window.location.href = dataInsert + "new/" + info.date.toISOString() + "/" + info.date.toISOString();
         },
         select: function (info) {
+            info.end.setSeconds(info.end.getSeconds() - 1);
             window.location.href = dataInsert + "new/" + info.start.toISOString() + "/" + info.end.toISOString();
         },
         eventClick: function (info) {

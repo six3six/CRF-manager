@@ -20,8 +20,8 @@ class PlanningEntryType extends AbstractType
         $builder
             ->add('start', DateTimeType::class, $date_options)
             ->add('stop', DateTimeType::class, $date_options)
-            ->add('is_event', CheckboxType::class, ["attr" => ["class" => "is-event"]])
-            ->add('name', TextType::class, ["attr" => ["class" => "event-field"]])
+            ->add('is_event', CheckboxType::class, ["attr" => ["class" => "is-event"], 'required' => false,])
+            ->add('name', TextType::class, ["attr" => ["class" => "event-field"], "required" => false, "empty_data" => ""])
             ->add("state", ChoiceType::class, [
                 "choices" => ["En attente" => PlanningEntry::STATE_WAITING, "Validé" => PlanningEntry::STATE_VALIDATE],
                 "multiple" => false,
@@ -35,6 +35,9 @@ class PlanningEntryType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => PlanningEntry::class,
+            'is_event' => false,
+            'name' => "",
+            'state' => PlanningEntry::STATE_UNKNOWN
         ]);
     }
 }

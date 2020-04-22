@@ -18,11 +18,14 @@ $(function () {
     let is_event = $(".is-event");
 
     let change_resp_type = function () {
-        let event_fields = $(".event-field").parent();
+        let event_fields = $(".event-field");
+        let event_fields_parent = event_fields.parent();
         if (is_event.is(":checked")) {
-            event_fields.show();
+            event_fields_parent.show();
+            event_fields.attr("required", true);
         } else {
-            event_fields.hide();
+            event_fields.removeAttr('required');
+            event_fields_parent.hide();
         }
     }
 

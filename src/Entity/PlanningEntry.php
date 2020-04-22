@@ -40,7 +40,7 @@ class PlanningEntry
     /**
      * @ORM\Column(type="integer", nullable=false)
      */
-    private $state = self::STATE_UNKNOWN;
+    private $state = self::STATE_WAITING;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)

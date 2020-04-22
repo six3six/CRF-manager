@@ -18,10 +18,10 @@
             {% endif %}
             {% if state is defined %}
                 <strong>Etat : </strong>
-                {% if state == constant('App\\Entity\\Availability::STATE_UNKNOWN') %}actuellement inconnu
-                {% elseif state == constant('App\\Entity\\Availability::STATE_MOD_WAITING') %} en attente de vérification de la modification
-                {% elseif state == constant('App\\Entity\\Availability::STATE_VALIDATE') %} validé
-                {% elseif state == constant('App\\Entity\\Availability::STATE_WAITING') %} en attente de vérification
+                {% if state == constant('App\\Entity\\PlanningEntry::STATE_UNKNOWN') %}actuellement inconnu
+                {% elseif state == constant('App\\Entity\\PlanningEntry::STATE_MOD_WAITING') %} en attente de vérification de la modification
+                {% elseif state == constant('App\\Entity\\PlanningEntry::STATE_VALIDATE') %} validé
+                {% elseif state == constant('App\\Entity\\PlanningEntry::STATE_WAITING') %} en attente de vérification
                 {% endif %}
             {% endif %}
         {% else %}
