@@ -6,9 +6,9 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AvailabilityRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PlanningEntryRepository")
  */
-class Availability
+class PlanningEntry
 {
     const STATE_UNKNOWN = 0;
     const STATE_WAITING = 1;
@@ -32,20 +32,25 @@ class Availability
     private $stop;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="availabilities")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="planning_entries")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="attached_availabilities")
-     */
-    private $attached_to;
-
-    /**
      * @ORM\Column(type="integer", nullable=false)
      */
     private $state = self::STATE_UNKNOWN;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_event;
 
     public function getId(): ?int
     {
@@ -88,18 +93,6 @@ class Availability
         return $this;
     }
 
-    public function getAttachedTo(): ?Event
-    {
-        return $this->attached_to;
-    }
-
-    public function setAttachedTo(?Event $attached_to): self
-    {
-        $this->attached_to = $attached_to;
-
-        return $this;
-    }
-
     public function getState(): ?int
     {
         return $this->state;
@@ -108,6 +101,30 @@ class Availability
     public function setState(?int $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getIsEvent(): ?bool
+    {
+        return $this->is_event;
+    }
+
+    public function setIsEvent(bool $is_event): self
+    {
+        $this->is_event = $is_event;
 
         return $this;
     }

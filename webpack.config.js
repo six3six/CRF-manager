@@ -26,7 +26,6 @@ Encore
     .addEntry('app', './assets/js/app.js')
     .addEntry('planning', './assets/js/planning.js')
     .addEntry('planning-edit', './assets/js/planning-edit.js')
-    .addEntry('admin-event', './assets/js/admin-event.js')
     .addEntry('admin-user', './assets/js/admin-user.js')
     .addEntry('admin', './assets/js/admin.js')
     //.addEntry('page1', './assets/js/page1.js')

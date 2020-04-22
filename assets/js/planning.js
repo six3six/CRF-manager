@@ -18,7 +18,7 @@ import $ from 'jquery';
 require('bootstrap');
 
 let dataSource = "/planning/source";
-let dataInsert = "/planning/availability/";
+let dataInsert = "/planning/entry/";
 $(function () {
     let add_event_modal = $("#addEventModal");
 
@@ -49,7 +49,7 @@ $(function () {
     calendar.render();
 });
 
-var showEventModal = function () {
+let showEventModal = function () {
     let eventModal = $("#eventModal");
     eventModal.modal("show");
 }

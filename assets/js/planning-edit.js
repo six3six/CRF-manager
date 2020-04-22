@@ -11,12 +11,21 @@ var picker_options = {
 };
 
 $(function () {
-    let datepickers = $(".datepicker");
-    console.log(datepickers);
-    for (let i = 0; i < datepickers.length; i++) {
-        let datep = $(datepickers[i]);
-        datep.attr("type", 'text');
-        datep.datetimepicker(picker_options);
+    let date_pickers = $(".datepicker");
+    date_pickers.attr("type", 'text');
+    date_pickers.datetimepicker(picker_options);
+
+    let is_event = $(".is-event");
+
+    let change_resp_type = function () {
+        let event_fields = $(".event-field").parent();
+        if (is_event.is(":checked")) {
+            event_fields.show();
+        } else {
+            event_fields.hide();
+        }
     }
 
+    is_event.change(change_resp_type);
+    change_resp_type();
 });

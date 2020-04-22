@@ -2,20 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Availability;
-use App\Entity\Event;
 use App\Entity\Skill;
 use App\Entity\User;
-use App\Form\EventType;
 use App\Form\RegistrationFormType;
 use App\Form\SkillType;
 use App\Form\UserInfoType;
 use App\Security\LoginFormAuthenticator;
 use DateTime;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -174,161 +169,6 @@ class   AdminController extends AbstractController
             'delete' => true,
             "user" => $user
         ]);
-    }
-
-    /**
-     * @Route("/admin/event", name="admin_events_view")
-     */
-    public function events_view()
-    {
-        return $this->render('admin/event/event.html.twig');
-    }
-
-    /**
-     * @Route("/admin/event/list", name="admin_event_list")
-     */
-    public function event_list()
-    {
-        $eventRepo = $this->getDoctrine()->getRepository(Event::class);
-        $all_events = $eventRepo->findAll();
-        $ret = array();
-        foreach ($all_events as $event) {
-            array_push($ret, array(
-                "title" => $event->getName(),
-                "start" => $event->getStart()->format(PlanningController::PLANNING_FORMAT),
-                "end" => $event->getStop()->format(PlanningController::PLANNING_FORMAT),
-                "url" => $this->generateUrl("admin_event_edit", ["id" => $event->getId()])
-            ));
-        }
-        return new JsonResponse($ret);
-    }
-
-    /**
-     * @Route("/admin/event/new/{start}/{stop}", name="admin_event_new_start_stop")
-     * @param Request $request
-     * @param string $start
-     * @param string $stop
-     * @return Response
-     * @throws Exception
-     */
-    public function event_start_stop(Request $request, $start, $stop)
-    {
-        $event = new Event();
-        $event->setStart(new DateTime($start));
-        $event->setStop(new DateTime($stop));
-        return $this->event_new($request, $event);
-    }
-
-    /**
-     * @Route("/admin/event/new/", name="admin_event_new")
-     * @param Request $request
-     * @param Event $event
-     * @return Response
-     */
-    public function event_new(Request $request, $event = null)
-    {
-        if ($event == null) $event = new Event();
-
-        $form = $this->createForm(EventType::class, $event);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $event = $form->getData();
-            $event->setCreatedBy($this->getUser());
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($event);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('admin_events_view');
-        }
-
-
-        return $this->render('admin/event/edit.html.twig', [
-            'form' => $form->createView(),
-            'delete' => false,
-        ]);
-    }
-
-    /**
-     * @Route("/admin/event/delete/{id}", name="admin_event_delete")
-     * @param $id
-     * @return RedirectResponse
-     */
-    public function event_delete($id)
-    {
-        $repo = $this->getDoctrine()->getRepository(Event::class);
-        $event = $repo->find($id);
-        if ($event == null) throw new NotFoundHttpException("Evenement non trouvé");
-        $this->getDoctrine()->getManager()->remove($event);
-        $this->getDoctrine()->getManager()->flush();
-        return $this->redirectToRoute("admin_events_view");
-    }
-
-    /**
-     * @Route("/admin/event/{id}", name="admin_event_edit")
-     * @param Request $request
-     * @param $id
-     * @return Response
-     */
-    public function event_edit(Request $request, $id)
-    {
-        $repo = $this->getDoctrine()->getRepository(Event::class);
-        /**
-         * @var Event|null $event
-         */
-        $event = $repo->find($id);
-        if ($event == null) throw new NotFoundHttpException("Evenement non trouvé : " . $id);
-        $form = $this->createForm(EventType::class, $event);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $event = $form->getData();
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($event);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('admin_events_view');
-        }
-
-        return $this->render('admin/event/edit.html.twig', [
-            'form' => $form->createView(),
-            'delete' => true,
-            "id" => $event->getId(),
-            "user" => $event->getCreatedBy(),
-            "availabilities" => $event->getAttachedAvailabilities()
-        ]);
-    }
-
-    /**
-     * @Route("/admin/availability/{id}/{validation}", name="admin_availability_validate")
-     * @param Request $request
-     * @param int $id
-     * @param string validation
-     * @return Response
-     */
-    public function availability_validate(Request $request, int $id, string $validation)
-    {
-        $repo = $this->getDoctrine()->getRepository(Availability::class);
-        /**
-         * @var Availability|null $availability
-         */
-        $availability = $repo->find($id);
-        if ($availability == null) throw new NotFoundHttpException("Disponibilité non trouvée : " . $id);
-        if ($validation != "false") {
-            $availability->setState(Availability::STATE_VALIDATE);
-            $this->getDoctrine()->getManager()->persist($availability);
-        } else {
-            $this->getDoctrine()->getManager()->remove($availability);
-        }
-        $this->getDoctrine()->getManager()->flush();
-        $attached = $availability->getAttachedTo();
-        if ($attached == null)
-            return $this->redirectToRoute('admin_event_list');
-        else
-            return $this->redirectToRoute('admin_event_edit', ["id" => $attached->getId()]);
     }
 
 

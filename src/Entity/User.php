@@ -60,14 +60,9 @@ class User implements UserInterface
     private $skills;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="created_by")
+     * @ORM\OneToMany(targetEntity="PlanningEntry", mappedBy="user", orphanRemoval=true)
      */
-    private $created_event;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Availability", mappedBy="user", orphanRemoval=true)
-     */
-    private $availabilities;
+    private $planning_entries;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -87,8 +82,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->skills = new ArrayCollection();
-        $this->created_event = new ArrayCollection();
-        $this->availabilities = new ArrayCollection();
+        $this->planning_entries = new ArrayCollection();
         $d = new DateTime();
         $d->setTimestamp(time());
         $this->setBirthday($d);
@@ -236,30 +230,30 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Availability[]
+     * @return Collection|PlanningEntry[]
      */
-    public function getAvailabilities(): Collection
+    public function getPlanningEntries(): Collection
     {
-        return $this->availabilities;
+        return $this->planning_entries;
     }
 
-    public function addAvailability(Availability $availability): self
+    public function addPlanningEntry(PlanningEntry $planning_entry): self
     {
-        if (!$this->availabilities->contains($availability)) {
-            $this->availabilities[] = $availability;
-            $availability->setUser($this);
+        if (!$this->planning_entries->contains($planning_entry)) {
+            $this->planning_entries[] = $planning_entry;
+            $planning_entry->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeAvailability(Availability $availability): self
+    public function removePlanningEntry(PlanningEntry $planning_entry): self
     {
-        if ($this->availabilities->contains($availability)) {
-            $this->availabilities->removeElement($availability);
+        if ($this->planning_entries->contains($planning_entry)) {
+            $this->planning_entries->removeElement($planning_entry);
             // set the owning side to null (unless already changed)
-            if ($availability->getUser() === $this) {
-                $availability->setUser(null);
+            if ($planning_entry->getUser() === $this) {
+                $planning_entry->setUser(null);
             }
         }
 

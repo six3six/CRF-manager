@@ -3,9 +3,8 @@
 namespace App\Controller;
 
 
-use App\Entity\Availability;
-use App\Entity\Event;
-use App\Form\AvailabilityType;
+use App\Entity\PlanningEntry;
+use App\Form\PlanningEntryType;
 use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,32 +41,19 @@ class PlanningController extends AbstractController
         $calendar = array();
         $user = $this->getUser();
 
-        $events = $this->getDoctrine()->getRepository(Event::class)->findAll();
-        $availabilities = $user->getAvailabilities();
-
-        foreach ($events as $event) {
-            $f_event = array(
-                "title" => $event->getName(),
-                "start" => $event->getStart()->format(PlanningController::PLANNING_FORMAT),
-                "end" => $event->getStop()->format(PlanningController::PLANNING_FORMAT),
-                "url" => "/planning/event/" . $event->getId(),
-                "backgroundColor" => "red",
-            );
-            array_push($calendar, $f_event);
-        }
-
-        foreach ($availabilities as $availability) {
+        $planningEntries = $user->getPlanningEntries();
+        foreach ($planningEntries as $planningEntry) {
             /**
-             * @var Availability $availability
+             * @var PlanningEntry $planningEntry
              */
             $backgnd = "";
             $title = "Disponibilité ";
-            switch ($availability->getState()) {
-                case Availability::STATE_MOD_WAITING or Availability::STATE_WAITING:
+            switch ($planningEntry->getState()) {
+                case PlanningEntry::STATE_MOD_WAITING or PlanningEntry::STATE_WAITING:
                     $backgnd = "orange";
                     $title .= "(en cours de validation)";
                     break;
-                case Availability::STATE_VALIDATE:
+                case PlanningEntry::STATE_VALIDATE:
                     $backgnd = "green";
                     $title .= "(validé)";
                     break;
@@ -78,9 +64,9 @@ class PlanningController extends AbstractController
             }
             $f_event = array(
                 "title" => $title,
-                "start" => $availability->getStart()->format(PlanningController::PLANNING_FORMAT),
-                "end" => $availability->getStop()->format(PlanningController::PLANNING_FORMAT),
-                "url" => "/planning/availability/" . $availability->getId(),
+                "start" => $planningEntry->getStart()->format(PlanningController::PLANNING_FORMAT),
+                "end" => $planningEntry->getStop()->format(PlanningController::PLANNING_FORMAT),
+                "url" => $this->generateUrl("planning_entry_edit", ["id" => $planningEntry->getId()]),
                 "backgroundColor" => $backgnd,
             );
             array_push($calendar, $f_event);
@@ -96,7 +82,7 @@ class PlanningController extends AbstractController
      */
     public function delete($id)
     {
-        $repo = $this->getDoctrine()->getRepository(Availability::class);
+        $repo = $this->getDoctrine()->getRepository(PlanningEntry::class);
         $availability = $repo->find($id);
         if (!$availability) throw new NotFoundHttpException("La disponibilité n'existe pas");
         if ($availability->getUser() !== $this->getUser() && !$this->getUser()->isAdmin()) throw new UnauthorizedHttpException("", "Vous n'avez pas le droit de modifier cette disponibilité");
@@ -130,47 +116,41 @@ class PlanningController extends AbstractController
     }
 
     /**
-     * @Route("/planning/availability/new/{start}/{stop}", name="planning_availability_new_start_stop")
+     * @Route("/planning/entry/new/{start}/{stop}", name="planning_entry_new_start_stop")
      * @param Request $request
      * @param string $start
      * @param string $stop
      * @return Response
      * @throws Exception
      */
-    public function availability_start_stop(Request $request, $start, $stop)
+    public function entry_start_stop(Request $request, $start, $stop)
     {
-        $availability = new Availability();
-        $availability->setStart(new DateTime($start));
-        $availability->setStop(new DateTime($stop));
-        return $this->availability_new($request, $availability);
+        $planningEntry = new PlanningEntry();
+        $planningEntry->setStart(new DateTime($start));
+        $planningEntry->setStop(new DateTime($stop));
+        return $this->availability_new($request, $planningEntry);
     }
 
     /**
-     * @Route("/planning/availability/new/", name="planning_availability_new")
+     * @Route("/planning/entry/new/", name="planning_availability_new")
      * @param Request $request
-     * @param Availability|null $availability
+     * @param PlanningEntry|null $planningEntry
      * @return Response
      */
-    public function availability_new(Request $request, $availability = null)
+    public function availability_new(Request $request, $planningEntry = null)
     {
-        if ($availability == null) $availability = new Availability();
-        /**
-         * @var Availability $availability
-         */
+        if ($planningEntry == null) $planningEntry = new PlanningEntry();
 
-        $form = $this->createForm(AvailabilityType::class, $availability);
+        $form = $this->createForm(PlanningEntryType::class, $planningEntry);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $availability = $form->getData();
-            $availability->setUser($this->getUser());
-            if ($availability->getAttachedTo() == null)
-                $availability->setState(Availability::STATE_VALIDATE);
-            else
-                $availability->setState(Availability::STATE_WAITING);
+            $planningEntry = $form->getData();
+            $planningEntry->setUser($this->getUser());
+
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($availability);
+            $entityManager->persist($planningEntry);
             $entityManager->flush();
 
             return $this->redirectToRoute('planning');
@@ -184,30 +164,28 @@ class PlanningController extends AbstractController
     }
 
     /**
-     * @Route("/planning/availability/{id}", name="planning_availability_edit")
+     * @Route("/planning/entry/{id}", name="planning_entry_edit")
      * @param Request $request
      * @param $id
      * @return Response
      */
-    public function availability_edit(Request $request, $id)
+    public function entry_edit(Request $request, $id)
     {
-        $repo = $this->getDoctrine()->getRepository(Availability::class);
-        $availability = $repo->find($id);
-        if ($availability == null) throw new NotFoundHttpException("Disponibilité non trouvé");
-        if ($availability->getUser() != $this->getUser() && !$this->getUser()->isAdmin()) throw new AccessDeniedException();
-        $form = $this->createForm(AvailabilityType::class, $availability);
+        $repo = $this->getDoctrine()->getRepository(PlanningEntry::class);
+        /**
+         * @var PlanningEntry $planningEntry
+         */
+        $planningEntry = $repo->find($id);
+        if ($planningEntry == null) throw new NotFoundHttpException("Disponibilité non trouvé");
+        if ($planningEntry->getUser() != $this->getUser() && !$this->getUser()->isAdmin()) throw new AccessDeniedException();
+        $form = $this->createForm(PlanningEntryType::class, $planningEntry);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $availability = $form->getData();
-
-            if ($availability->getAttachedTo() == null)
-                $availability->setState(Availability::STATE_VALIDATE);
-            else
-                $availability->setState(Availability::STATE_MOD_WAITING);
+            $planningEntry = $form->getData();
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($availability);
+            $entityManager->persist($planningEntry);
             $entityManager->flush();
 
             return $this->redirectToRoute('planning');
@@ -216,9 +194,9 @@ class PlanningController extends AbstractController
         return $this->render('planning/edit.html.twig', [
             'form' => $form->createView(),
             'delete' => true,
-            "id" => $availability->getId(),
-            "user" => $availability->getUser(),
-            "state" => $availability->getState()
+            "id" => $planningEntry->getId(),
+            "user" => $planningEntry->getUser(),
+            "state" => $planningEntry->getState()
         ]);
     }
 }
