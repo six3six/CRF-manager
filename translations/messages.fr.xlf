@@ -51,7 +51,7 @@
       </trans-unit>
       <trans-unit id="nWMiwfT" resname="Login">
         <source>Login</source>
-        <target>Connection</target>
+        <target>Connexion</target>
       </trans-unit>
       <trans-unit id="rPxb54W" resname="Disconnect">
         <source>Disconnect</source>
