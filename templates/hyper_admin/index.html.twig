@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CRFM - HyperAdmin{% endblock %}
+{% block javascripts %}
+{% endblock %}
+{% block stylesheets %}
+{% endblock %}
+{% block body %}
+    {% include "navbar.html.twig" %}
+    <div class="container">
+        <h1>HyperAdmin</h1>
+
+        <form method="post">
+            <h4>{% trans %}Execute a symfony command{% endtrans %}</h4>
+            {% if command_output is defined %}
+                <div class="code">{{ command_output|raw }}</div>
+            {% endif %}
+            <div class="form-group">
+                <input type="text" name="command" class="form-control">
+                <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

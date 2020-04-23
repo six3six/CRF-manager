@@ -134,12 +134,17 @@ class User implements UserInterface
         return in_array("ROLE_ADMIN", $this->roles);
     }
 
+    public function isHyperAdmin(): bool
+    {
+        return in_array("ROLE_HYPER_ADMIN", $this->roles);
+    }
+
     /**
      * @see UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self

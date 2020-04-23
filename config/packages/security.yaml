@@ -41,3 +41,4 @@ security:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/planning, roles: ROLE_USER }
          - { path: ^/profil, roles: ROLE_USER }
+         - { path: ^/hyper_admin, roles: ROLE_HYPER_ADMIN }

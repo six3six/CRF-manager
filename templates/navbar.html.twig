@@ -24,8 +24,12 @@
                         <a class="dropdown-item"
                            href="{{ path('admin_skill_view') }}">{% trans %}Manage skills{% endtrans %}</a>
 
-
                     </div>
+                </li>
+            {% endif %}
+            {% if app.user is not null and app.user.hyperAdmin %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('hyper_admin') }}">HyperAdmin</a>
                 </li>
             {% endif %}
         </ul>
