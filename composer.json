@@ -9,6 +9,7 @@
     "ext-iconv": "*",
     "ext-json": "*",
     "sensio/framework-extra-bundle": "^5.5",
+    "sensiolabs/ansi-to-html": "^1.1",
     "symfony/apache-pack": "^1.0",
     "symfony/asset": "*",
     "symfony/console": "*",
