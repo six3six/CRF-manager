@@ -59,7 +59,6 @@ class   AdminController extends AbstractController
                 $user->setRoles(["ROLE_USER", "ROLE_ADMIN"]);
             }
 
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
@@ -227,27 +226,7 @@ class   AdminController extends AbstractController
     public function skill_new(Request $request)
     {
         $skill = new Skill();
-
-        $form = $this->createForm(SkillType::class, $skill);
-
-        $form->handleRequest($request);
-
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $skill = $form->getData();
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($skill);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('admin_skill_view');
-        }
-
-
-        return $this->render('admin/skill/edit.html.twig', [
-            'form' => $form->createView(),
-            'delete' => false,
-        ]);
+        return $this->skill($request);
     }
 
     /**
@@ -274,6 +253,16 @@ class   AdminController extends AbstractController
         $repo = $this->getDoctrine()->getRepository(Skill::class);
         $skill = $repo->find($id);
         if ($skill == null) throw new NotFoundHttpException("Compétence non trouvée : " . $id);
+        return $this->skill($request, $skill);
+    }
+
+    public function skill(Request $request, Skill $skill = null)
+    {
+        $new = false;
+        if ($skill == null) {
+            $skill = new Skill();
+            $new = true;
+        }
 
         $form = $this->createForm(SkillType::class, $skill);
 
@@ -290,8 +279,26 @@ class   AdminController extends AbstractController
 
         return $this->render('admin/skill/edit.html.twig', [
             'form' => $form->createView(),
-            'delete' => true,
+            'new' => $new,
             "id" => $skill->getId()
         ]);
+    }
+
+    /**
+     * @Route("/admin/entry/{id}", name="admin_entry_edit")
+     * @param Request $request
+     * @param LoggerInterface $logger
+     * @param Integer|String $id
+     * @return Response
+     */
+    public function planning_entry_admin(Request $request, LoggerInterface $logger, $id)
+    {
+        $repo = $this->getDoctrine()->getRepository(PlanningEntry::class);
+        /**
+         * @var PlanningEntry $planningEntry
+         */
+        $planningEntry = $repo->find($id);
+        if ($planningEntry == null) throw new NotFoundHttpException("Disponibilité non trouvée");
+        return $this->forward("App\Controller\PlanningController::planning_entry", ["planningEntry" => $planningEntry, "new" => false, "redirectRoute" => "close"]);
     }
 }

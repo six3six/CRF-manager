@@ -7,6 +7,7 @@ use App\Entity\PlanningEntry;
 use App\Form\PlanningEntryType;
 use DateTime;
 use Exception;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -150,14 +151,13 @@ class PlanningController extends AbstractController
      * @param Request $request
      * @param PlanningEntry|null $planningEntry
      * @param bool $new
+     * @param string $redirectRoute
      * @return Response
      */
-    public function planning_entry(Request $request, $planningEntry = null, $new = true)
+    public function planning_entry(Request $request, PlanningEntry $planningEntry = null, bool $new = true, string $redirectRoute = "planning")
     {
+
         if ($planningEntry == null) $planningEntry = new PlanningEntry();
-        /**
-         * @var PlanningEntry $planningEntry
-         */
         $form = $this->createForm(PlanningEntryType::class, $planningEntry);
 
         $form->handleRequest($request);
@@ -170,7 +170,7 @@ class PlanningController extends AbstractController
             $entityManager->persist($planningEntry);
             $entityManager->flush();
 
-            return $this->redirectToRoute('planning');
+            return $this->redirectToRoute($redirectRoute);
         }
 
         if ($new) {
@@ -192,7 +192,7 @@ class PlanningController extends AbstractController
     /**
      * @Route("/planning/entry/{id}", name="planning_entry_edit")
      * @param Request $request
-     * @param $id
+     * @param Integer|String $id
      * @return Response
      */
     public function planning_entry_edit(Request $request, $id)
@@ -202,8 +202,9 @@ class PlanningController extends AbstractController
          * @var PlanningEntry $planningEntry
          */
         $planningEntry = $repo->find($id);
-        if ($planningEntry == null) throw new NotFoundHttpException("Disponibilité non trouvé");
-        if ($planningEntry->getUser() != $this->getUser() && !$this->getUser()->isAdmin()) throw new AccessDeniedException();
+        if ($planningEntry == null) throw new NotFoundHttpException("Disponibilité non trouvée");
+        if ($planningEntry->getUser() != $this->getUser())
+            throw new AccessDeniedException();
 
         return $this->planning_entry($request, $planningEntry, false);
     }

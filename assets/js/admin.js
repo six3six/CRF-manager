@@ -20,7 +20,8 @@ let picker_options = {
 };
 
 
-let user_profile_url = "/admin/user/"
+let user_profile_url = "/admin/user/";
+let event_edit = "/admin/entry/";
 $(function () {
 
     let now = Date.now();
@@ -92,6 +93,13 @@ $(function () {
     timeline.on("rangechanged", function (properties) {
         current_date = properties.start;
         date_picker.val(getTextFromDate(current_date));
+    });
+
+    timeline.on('click', function (properties) {
+        console.log(properties);
+        if (properties.item != null) {
+            window.open(event_edit + properties.item);
+        }
     });
 
     let date_picker = $("#datepicker");

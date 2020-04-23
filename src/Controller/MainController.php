@@ -19,6 +19,14 @@ class MainController extends AbstractController
     }
 
     /**
+     * @Route("/close", name="close")
+     */
+    public function close()
+    {
+        return $this->render('close.html.twig');
+    }
+
+    /**
      * @Route("/teapot")
      */
     public function teapot()
