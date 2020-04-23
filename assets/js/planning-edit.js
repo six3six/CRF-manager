@@ -3,14 +3,14 @@ import $ from 'jquery';
 import "jquery-datetimepicker/build/jquery.datetimepicker.min.css";
 
 
-require("jquery-datetimepicker/build/jquery.datetimepicker.full.min");
-
 var picker_options = {
     lang: 'fr',
     format: 'd/m/Y H:i',
 };
 
 $(function () {
+    require("jquery-datetimepicker/build/jquery.datetimepicker.full");
+
     let date_pickers = $(".datepicker");
     date_pickers.attr("type", 'text');
     date_pickers.datetimepicker(picker_options);
