@@ -5,7 +5,7 @@ namespace App\Controller;
 use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ class HyperAdminController extends AbstractController
         if (in_array("command", $request->request->keys())) {
             $application = new Application($kernel);
             $application->setAutoExit(false);
-            $input = new ArrayInput(explode(" ", $request->request->get("command")));
+            $input = new StringInput($request->request->get("command"));
             $output = new BufferedOutput(OutputInterface::VERBOSITY_NORMAL, true);
             $application->run($input, $output);
             $converter = new AnsiToHtmlConverter();
