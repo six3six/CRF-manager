@@ -56,7 +56,7 @@ class PlanningController extends AbstractController
                         $backgnd = "orange";
                         $title .= "(en cours de validation)";
                         break;
-                    case PlanningEntry::STATE_VALIDATE:
+                    case PlanningEntry::STATE_VALID:
                         $backgnd = "red";
                         $title .= "(validé)";
                         break;

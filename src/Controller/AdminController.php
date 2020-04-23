@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\PlanningEntry;
 use App\Entity\Skill;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
@@ -98,18 +99,46 @@ class   AdminController extends AbstractController
     public function user_planning($username)
     {
         $userRepo = $this->getDoctrine()->getRepository(User::class);
+        /**
+         * @var User $user
+         */
         $user = $userRepo->findOneBy(["username" => $username]);
         if ($user == null) throw new NotFoundHttpException("Utilisateur non trouvé");
 
         $ret = array();
 
-        foreach ($user->getAvailabilities() as $av) {
+        foreach ($user->getPlanningEntries() as $planningEntry) {
+            /**
+             * @var PlanningEntry $planningEntry
+             */
+            if ($planningEntry->getIsEvent()) {
+                $title = "Evt:" . $planningEntry->getName() . " ";
+                switch ($planningEntry->getState()) {
+                    case PlanningEntry::STATE_MOD_WAITING:
+                    case PlanningEntry::STATE_WAITING:
+                        $class_name = "waiting";
+                        $title .= "(en cours de validation)";
+                        break;
+                    case PlanningEntry::STATE_VALID:
+                        $class_name = "valid";
+                        $title .= "(validé)";
+                        break;
+                    default:
+                        $class_name = "unknown";
+                        $title .= "(inconnu)";
+                        break;
+                }
+            } else {
+                $class_name = "availability";
+                $title = "Disponibilité";
+            }
             array_push($ret, array(
-                "type" => "availability",
-                "start" => $av->getStart()->format(DateTime::ISO8601),
-                "stop" => $av->getStop()->format(DateTime::ISO8601),
-                "id" => $av->getId(),
-                "backgroundColor" => "green",
+                "type" => $title,
+                "name" => $title,
+                "start" => $planningEntry->getStart()->format(DateTime::ISO8601),
+                "stop" => $planningEntry->getStop()->format(DateTime::ISO8601),
+                "id" => $planningEntry->getId(),
+                "className" => "timeline-" . $class_name,
             ));
         }
         return new JsonResponse($ret);

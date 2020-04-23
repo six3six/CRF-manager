@@ -5,3 +5,23 @@
 .btn-delete {
   float: right;
 }
+
+.timeline-valid {
+  background-color: red;
+  color: white;
+}
+
+.timeline-waiting {
+  background-color: orange;
+  color: white;
+}
+
+.timeline-unknown {
+  background-color: grey;
+  color: white;
+}
+
+.timeline-availability {
+  background-color: blue;
+  color: white;
+}

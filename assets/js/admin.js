@@ -44,14 +44,8 @@ $(function () {
             });
             $.getJSON("/admin/user/" + user.username + "/planning", function (planning_els) {
                 planning_els.forEach(function (planning_el) {
-                    if (planning_el.type === "availability") {
-                        planning_el.name = "Disponibilité";
-                        planning_el.className = "av_box";
-                    } else if (planning_el.type === "event") {
-                        planning_el.className = "ev_box";
-                    }
                     items.add({
-                        id: planning_el.id + user.username,
+                        id: planning_el.id,
                         group: user.username,
                         start: new Date(planning_el.start),
                         end: new Date(planning_el.stop),

@@ -23,7 +23,7 @@ class PlanningEntryType extends AbstractType
             ->add('is_event', CheckboxType::class, ["attr" => ["class" => "is-event"], 'required' => false,])
             ->add('name', TextType::class, ["attr" => ["class" => "event-field"], "required" => false, "empty_data" => ""])
             ->add("state", ChoiceType::class, [
-                "choices" => ["Waiting" => PlanningEntry::STATE_WAITING, "Valid" => PlanningEntry::STATE_VALIDATE],
+                "choices" => ["Waiting" => PlanningEntry::STATE_WAITING, "Valid" => PlanningEntry::STATE_VALID],
                 "multiple" => false,
                 "expanded" => true,
                 "attr" => ["class" => "event-field"]

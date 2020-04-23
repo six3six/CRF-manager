@@ -13,7 +13,7 @@ class PlanningEntry
     const STATE_UNKNOWN = 0;
     const STATE_WAITING = 1;
     const STATE_MOD_WAITING = 2;
-    const STATE_VALIDATE = 3;
+    const STATE_VALID = 3;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
