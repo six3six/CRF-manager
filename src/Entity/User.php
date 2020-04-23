@@ -83,6 +83,7 @@ class User implements UserInterface
     {
         $this->skills = new ArrayCollection();
         $this->planning_entries = new ArrayCollection();
+        $this->birthday = new DateTime();
         $d = new DateTime();
         $d->setTimestamp(time());
         $this->setBirthday($d);

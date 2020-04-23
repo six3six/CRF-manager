@@ -121,6 +121,10 @@
         <source>Password</source>
         <target>Mot de passe</target>
       </trans-unit>
+      <trans-unit id="RepeatPassword" resname="Repeat Password">
+        <source>Repeat Password</source>
+        <target>Répétez le mot de passe</target>
+      </trans-unit>
       <trans-unit id="_TJnqhH" resname="Remember me">
         <source>Remember me</source>
         <target>Se rappeller de moi</target>
@@ -216,6 +220,14 @@
       <trans-unit id="BPiZbad" resname="user">
         <source>user</source>
         <target>utilisateur</target>
+      </trans-unit>
+      <trans-unit id="plainpassword" resname="Plain password">
+        <source>Plain password</source>
+        <target>Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="displayname" resname="Display name">
+        <source>Display name</source>
+        <target>Nom d'affichage</target>
       </trans-unit>
     </body>
   </file>
