@@ -5,14 +5,13 @@
     {% include "navbar.html.twig" %}
 
     <div class="container">
-        {% if id is defined %}
-            <h1><strong>{% trans %}Modify{% endtrans %}</strong> {% trans %}the skill n°{% endtrans %}
-                <strong>{{ id }}</strong></h1>
+        {% if not new %}
+            <h1>{% trans with {'%id%': id} %}<strong>Modify</strong> skill n°<strong>%id%</strong>{% endtrans %}</h1>
         {% else %}
-            <h1><strong>{% trans %}Add{% endtrans %}</strong> {% trans %}a new skill{% endtrans %}</h1>
+            <h1>{% trans %}<strong>Add</strong> a new skill{% endtrans %}</h1>
         {% endif %}
         {{ form(form) }}
-        {% if delete %}
+        {% if not new %}
             <a class="btn btn-outline-danger btn-delete"
                href="{{ path('admin_skill_delete', {'id': id}) }}">{% trans %}Remove{% endtrans %}</a>
         {% endif %}

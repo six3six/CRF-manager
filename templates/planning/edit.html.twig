@@ -12,21 +12,23 @@
 
     <div class="container">
         {% if id is defined %}
-            <h1><strong>{% trans %}Modify{% endtrans %}</strong> {% trans %}availability n°{% endtrans %}
-                <strong>{{ id }}</strong></h1>
+            <h1>{% trans with {'%id%': id} %}<strong>Modify</strong> availability n°<strong>%id%</strong>{% endtrans %}
+            </h1>
             {% if app.user.admin and user is defined %}
-                <h4>{% trans %}Availability of{% endtrans %} <strong>{{ user.displayName }}</strong></h4>
+                <h4>{% trans with {'%display_name%': user.displayName} %}
+                        <strong>%display_name%</strong> availability
+                    {% endtrans %}</h4>
             {% endif %}
             {% if state is defined %}
                 <strong>{% trans %}State{% endtrans %} : </strong>
                 {% if state == constant('App\\Entity\\PlanningEntry::STATE_UNKNOWN') %}{% trans %}Unknown{% endtrans %}
                 {% elseif state == constant('App\\Entity\\PlanningEntry::STATE_MOD_WAITING') %}{% trans %}Waiting{% endtrans %}
-                {% elseif state == constant('App\\Entity\\PlanningEntry::STATE_VALIDATE') %}{% trans %}Valid{% endtrans %}
+                {% elseif state == constant('App\\Entity\\PlanningEntry::STATE_VALID') %}{% trans %}Valid{% endtrans %}
                 {% elseif state == constant('App\\Entity\\PlanningEntry::STATE_WAITING') %}{% trans %}Waiting{% endtrans %}
                 {% endif %}
             {% endif %}
         {% else %}
-            <h1><strong>{% trans %}Add{% endtrans %}</strong> {% trans %}a new availability{% endtrans %}</h1>
+            <h1>{% trans %}<strong>Add</strong>a new availability{% endtrans %}</h1>
         {% endif %}
         {{ form(form) }}
         {% if delete %}

@@ -12,8 +12,7 @@
 
 
     <div class="container">
-        <h1><strong>{% trans %}Modify{% endtrans %}</strong> {% trans %}user{% endtrans %}
-            <strong>{{ user.username }}</strong></h1>
+        <h1>{% trans %}<strong>Modify</strong> user{% endtrans %} : <strong>{{ user.username }}</strong></h1>
         {{ form(form) }}
         {% if delete %}
             <a class="btn btn-outline-danger btn-delete"

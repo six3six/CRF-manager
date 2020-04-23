@@ -241,6 +241,31 @@
         <source>Reset password</source>
         <target>Réinitialiser son mot de passe</target>
       </trans-unit>
+      <trans-unit id="0sAgygk"
+                  resname="&lt;strong&gt;Modify&lt;/strong&gt; availability n°&lt;strong&gt;%id%&lt;/strong&gt;">
+        <source>&lt;strong&gt;Modify&lt;/strong&gt; availability n°&lt;strong&gt;%id%&lt;/strong&gt;</source>
+        <target><![CDATA[<strong>Modifier</strong> la disponibilité n°<strong>%id%</strong>]]></target>
+      </trans-unit>
+      <trans-unit id="Vr8lXo0" resname="&lt;strong&gt;%display_name%&lt;/strong&gt; availability">
+        <source>&lt;strong&gt;%display_name%&lt;/strong&gt; availability</source>
+        <target><![CDATA[Disponibilité de <strong>%display_name%</strong>]]></target>
+      </trans-unit>
+      <trans-unit id="DM9R9OD" resname="&lt;strong&gt;Add&lt;/strong&gt;a new availability">
+        <source>&lt;strong&gt;Add&lt;/strong&gt;a new availability</source>
+        <target><![CDATA[<strong>Ajouter</strong> une nouvelle disponibilité]]></target>
+      </trans-unit>
+      <trans-unit id="i_Gl2Lj" resname="&lt;strong&gt;Modify&lt;/strong&gt; skill n°&lt;strong&gt;%id%&lt;/strong&gt;">
+        <source>&lt;strong&gt;Modify&lt;/strong&gt; skill n°&lt;strong&gt;%id%&lt;/strong&gt;</source>
+        <target><![CDATA[<strong>Modifier</strong> la compétence n°<strong>%id%</strong>]]></target>
+      </trans-unit>
+      <trans-unit id="xrrXd27" resname="&lt;strong&gt;Add&lt;/strong&gt; a new skill">
+        <source>&lt;strong&gt;Add&lt;/strong&gt; a new skill</source>
+        <target><![CDATA[<strong>Ajouter</strong> une nouvelle compétence]]></target>
+      </trans-unit>
+      <trans-unit id="WXovT26" resname="&lt;strong&gt;Modify&lt;/strong&gt; user">
+        <source>&lt;strong&gt;Modify&lt;/strong&gt; user</source>
+        <target><![CDATA[<strong>Modifier</strong> l'utilisateur]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
