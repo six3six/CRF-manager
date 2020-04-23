@@ -1,6 +1,8 @@
 import '../css/planning.scss';
-import $ from 'jquery';
 import "jquery-datetimepicker/build/jquery.datetimepicker.min.css";
+import $ from "jquery";
+
+require("jquery-datetimepicker/build/jquery.datetimepicker.full");
 
 
 var picker_options = {
@@ -9,7 +11,7 @@ var picker_options = {
 };
 
 $(function () {
-    require("jquery-datetimepicker/build/jquery.datetimepicker.full");
+
 
     let date_pickers = $(".datepicker");
     date_pickers.attr("type", 'text');
