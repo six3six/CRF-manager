@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -41,6 +42,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add("email", EmailType::class)
             ->add("display_name")
+            ->add("is_admin", CheckboxType::class, ['required' => false, "mapped" => false, "label" => "Set as administrator"])
             ->add("save", SubmitType::class);
     }
 

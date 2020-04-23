@@ -10,6 +10,7 @@ use App\Form\SkillType;
 use App\Form\UserInfoType;
 use App\Security\LoginFormAuthenticator;
 use DateTime;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,9 +38,10 @@ class   AdminController extends AbstractController
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param GuardAuthenticatorHandler $guardHandler
      * @param LoginFormAuthenticator $authenticator
+     * @param LoggerInterface $logger
      * @return Response
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, LoggerInterface $logger): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -53,6 +55,10 @@ class   AdminController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            if ($form->get("is_admin")->getData()) {
+                $user->setRoles(["ROLE_USER", "ROLE_ADMIN"]);
+            }
+
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

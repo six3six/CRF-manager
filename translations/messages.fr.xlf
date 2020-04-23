@@ -233,6 +233,10 @@
         <source>Execute a symfony command</source>
         <target>Executer une commande symfony</target>
       </trans-unit>
+      <trans-unit id="m7ln3WR" resname="Set as administrator">
+        <source>Set as administrator</source>
+        <target>Définir en tant qu'administrateur</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
