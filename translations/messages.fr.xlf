@@ -121,7 +121,7 @@
         <source>Password</source>
         <target>Mot de passe</target>
       </trans-unit>
-      <trans-unit id="RepeatPassword" resname="Repeat Password">
+      <trans-unit id="Hkmh4Tp" resname="Repeat Password">
         <source>Repeat Password</source>
         <target>Répétez le mot de passe</target>
       </trans-unit>
@@ -221,13 +221,17 @@
         <source>user</source>
         <target>utilisateur</target>
       </trans-unit>
-      <trans-unit id="plainpassword" resname="Plain password">
+      <trans-unit id="RZQ0CeQ" resname="Plain password">
         <source>Plain password</source>
         <target>Mot de passe</target>
       </trans-unit>
-      <trans-unit id="displayname" resname="Display name">
+      <trans-unit id="K39qhN6" resname="Display name">
         <source>Display name</source>
         <target>Nom d'affichage</target>
+      </trans-unit>
+      <trans-unit id="J4eYTpJ" resname="Execute a symfony command">
+        <source>Execute a symfony command</source>
+        <target>Executer une commande symfony</target>
       </trans-unit>
     </body>
   </file>
