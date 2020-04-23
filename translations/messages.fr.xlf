@@ -237,6 +237,10 @@
         <source>Set as administrator</source>
         <target>Définir en tant qu'administrateur</target>
       </trans-unit>
+      <trans-unit id="4O3_s6c" resname="Reset password">
+        <source>Reset password</source>
+        <target>Réinitialiser son mot de passe</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
