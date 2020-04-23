@@ -1,4 +1,3 @@
-require("core-js");
 import "../css/global.scss";
 import "../css/admin.scss";
 import "vis-timeline/styles/vis-timeline-graph2d.css";
