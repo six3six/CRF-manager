@@ -12,8 +12,6 @@ import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import '@fullcalendar/list/main.css';
 
-import $ from 'jquery';
-
 
 let dataSource = "/planning/source/";
 $(function () {
