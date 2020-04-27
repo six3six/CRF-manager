@@ -79,6 +79,11 @@ class User implements UserInterface
      */
     private $address = "";
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nivol = "";
+
     public function __construct()
     {
         $this->skills = new ArrayCollection();
@@ -87,6 +92,7 @@ class User implements UserInterface
         $d = new DateTime();
         $d->setTimestamp(time());
         $this->setBirthday($d);
+        $this->nivol = "";
     }
 
     public function getId(): ?int
@@ -298,6 +304,18 @@ class User implements UserInterface
     public function setAddress(string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getNivol(): ?string
+    {
+        return $this->nivol;
+    }
+
+    public function setNivol(string $nivol): self
+    {
+        $this->nivol = $nivol;
 
         return $this;
     }

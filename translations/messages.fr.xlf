@@ -229,6 +229,10 @@
         <source>Display name</source>
         <target>Nom d'affichage</target>
       </trans-unit>
+      <trans-unit id="5LpJlai" resname="Nivol">
+        <source>Nivol</source>
+        <target>N.I.V.O.L</target>
+      </trans-unit>
       <trans-unit id="J4eYTpJ" resname="Execute a symfony command">
         <source>Execute a symfony command</source>
         <target>Executer une commande symfony</target>
@@ -241,8 +245,7 @@
         <source>Reset password</source>
         <target>Réinitialiser son mot de passe</target>
       </trans-unit>
-      <trans-unit id="0sAgygk"
-                  resname="&lt;strong&gt;Modify&lt;/strong&gt; availability n°&lt;strong&gt;%id%&lt;/strong&gt;">
+      <trans-unit id="0sAgygk" resname="&lt;strong&gt;Modify&lt;/strong&gt; availability n°&lt;strong&gt;%id%&lt;/strong&gt;">
         <source>&lt;strong&gt;Modify&lt;/strong&gt; availability n°&lt;strong&gt;%id%&lt;/strong&gt;</source>
         <target><![CDATA[<strong>Modifier</strong> la disponibilité n°<strong>%id%</strong>]]></target>
       </trans-unit>
