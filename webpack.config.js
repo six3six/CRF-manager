@@ -1,4 +1,5 @@
 var Encore = require('@symfony/webpack-encore');
+const path = require('path');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -28,9 +29,10 @@ Encore
     .addEntry('planning-edit', './assets/js/planning-edit.js')
     .addEntry('admin-user', './assets/js/admin-user.js')
     .addEntry('admin', './assets/js/admin.js')
-    //.addEntry('page1', './assets/js/page1.js')
-    //.addEntry('page2', './assets/js/page2.js')
 
+    .addAliases({
+        "jquery": path.join(__dirname, 'node_modules/jquery/src/jquery')
+    })
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
 
@@ -76,5 +78,6 @@ Encore
     //.enableReactPreset()
     //.addEntry('admin', './assets/js/admin.js')
 ;
+
 
 module.exports = Encore.getWebpackConfig();

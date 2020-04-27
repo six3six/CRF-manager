@@ -10,8 +10,6 @@ var picker_options = {
 };
 
 $(function () {
-
-
     let date_pickers = $(".datepicker");
     date_pickers.attr("type", 'text');
     date_pickers.datetimepicker(picker_options);
